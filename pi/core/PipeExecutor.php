@@ -1,0 +1,68 @@
+<?php
+/**
+ * @file PipeExecutor.php
+ * @author wanghe (hihu@qq.com)
+ * @date 2015/12/08
+ * @version 1.0 
+ **/
+ 
+Pi::inc(PI_CORE.'Ipipe.php');
+
+class PipeExecutor {
+	private $arr_pipe = array();
+	private $app = null;
+
+	function __construct(App $app){
+		$this->app = $app;
+	}
+
+	function loadPipes($pipes = null,$root = null){
+		//pipe 数组格式 path => class_name
+		//加载默认的处理管道
+		if($pipes == null){
+			$pipes = array();
+			$input = Pi::get('DefaultInputPipe');
+			$output = Pi::get('DefaultOutputPipe');
+			$pipes = array(
+							$input => PI_PIPE.$input.'.php',
+							$output => PI_PIPE.$output.'.php'
+						   );
+		}else{
+			if(is_string($pipes)){
+				$pipes = array($pipes);
+			}
+			if(empty($pipes)){
+				return false;
+			}
+			//加载管道位置
+			$root = ($root == 'default') ? PI_ROOT : COM_ROOT;
+			foreach ($pipes as $k => $cls){
+				$pipes[$cls] = $root.'pipe'.DOT.$cls.'.php';
+				unset($pipes[$k]);
+			}
+		}
+		foreach($pipes as $cls => $path) {
+			if(isset($this->arr_pipe[$cls])) continue;
+			if(is_readable($path)){
+				Pi::inc($path);
+				if(class_exists($cls)){
+					$this->arr_pipe[$cls] = new $cls();
+				}
+			}else{
+				throw new Exception('the pipe '.$cls.' can not load,check pipe file',1020);
+			}
+		}
+	}
+
+	function execute($pipe){
+		if (!isset($this->arr_pipe[$pipe])) {
+			return false;
+		}
+		$pipe_obj = $this->arr_pipe[$pipe];
+		if ($pipe_obj->execute($this->app) === false) {
+			return false;
+		}
+		return true;
+	}
+//end of class
+}
