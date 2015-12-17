@@ -12,14 +12,15 @@ class ApiApp extends App {
 		}
 		$this->mode = 'api';
 		$this->env = Pi::get('env','online');
-		$data_type = Pi::get("global.data_type",'json');
+		$data_type = Conf::get("global.data_type",'json');
 		if(isset($this->data_types[$data_type])){
 			$this->data_type = $data_type;
 		}
 
 		parent::__construct();
 
-		if($this->debug){
+		//debug
+		if($this->debug && !empty($argv)){
 			$_REQUEST['mod'] = $argv[1];
 			$_REQUEST['func'] = $argv[2];
 		}

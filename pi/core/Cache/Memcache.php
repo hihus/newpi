@@ -1,6 +1,6 @@
 <?php
 Pi::inc(dirname(__FILE__).DOT.'PICacheAbstract.php');
-class PMemcache extends PICacheAbstract
+class PMem extends PICacheAbstract
 {
     /**
      * Constructor

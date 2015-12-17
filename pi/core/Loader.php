@@ -3,9 +3,22 @@
 Pi::inc(PI_CORE.'Export.php');
 
 //加载com模块的函数
-function picom($mod,$add = ''){
+function picom($mod,$add = '',$is_server = false){
 	$mod = strtolower($mod);
 	$add = strtolower($add);
+	//服务器端自身模块不再远程调用
+	static $rpc_mod = array();
+	if($is_server !== false){
+		$rpc_mod[$mod] = 1;
+	}
+	//客户端是否走远程加载
+	$rpc_conf = Pi::get('proxy.'.$mod,array());
+	if(!empty($rpc_conf) && $is_server === false && !isset($rpc_mod[$mod])){
+		Pi::inc(PI_CORE.'Proxy.php');
+		$rpc = new PI_PRC($mod,$add,$rpc_conf);
+		return $rpc;
+	}
+
 	if($add == ''){
 		$cls = ucfirst($mod).'Export';
 		$file = EXPORT_ROOT.$mod.DOT.$cls.'.php';
@@ -52,6 +65,7 @@ function _pi_autoloader_core($class){
 	}
 }
 
+//注册自动加载函数
 if(function_exists('spl_autoload_register')){
 	spl_autoload_register('_pi_autoloader_core');
 }

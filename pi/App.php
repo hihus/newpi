@@ -119,6 +119,8 @@ class App {
 			die("pi.err can't read the core db lib \n");
 		}
 		Pi::inc($db_lib);
+		//对数据库表操作的类需要集成下面文件的类
+		Pi::inc(PI_CORE.'BaseModel.php');
 	}
 
 	protected function _initCache(){
