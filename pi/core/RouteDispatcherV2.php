@@ -70,7 +70,7 @@ class RouteDispatcher {
 
 		$uri = implode('/',$uri);
 		//检查uri安全性
-		if(!preg_match('/^[0-9a-zA-Z\/]*$/',$uri)){
+		if(!preg_match('/^[\+\-_0-9a-zA-Z\/]*$/',$uri)){
 			throw new Exception('router.err illegal uri visit '.$uri,1027);
 		}
 
@@ -80,7 +80,7 @@ class RouteDispatcher {
 		if(isset($self_router[$uri])){
 			$uri = $self_router[$uri];
 		}else{
-			$param_pattern = '/[0-9]+/';
+			$param_pattern = '/[\+\-_0-9]+/';
 			if(preg_match($param_pattern,$uri)){
 				//带参转换
 				$tmp_mod = explode('/',$uri);
@@ -176,7 +176,7 @@ class RouteDispatcher {
 				$this->_call_method($class,'setAjax',array(true));
 			}
 			$this->_call_method($class,'_before');
-			if(!$this->_call_method($class,$this->func)){
+			if(substr($this->func,0,1) == '_' || !$this->_call_method($class,$this->func)){
 				throw new Exception('router.err not '.$cls.' can not call : '.$this->func,1025);
 			}
 			$this->_call_method($class,'_after');
