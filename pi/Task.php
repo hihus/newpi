@@ -1,6 +1,5 @@
 <?php
-
-if(!defined(PI_ROOT)) define("PI_ROOT",dirname(__FILE__).'/');
+if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
 class TaskApp extends App {
@@ -11,7 +10,7 @@ class TaskApp extends App {
 		if(!defined("APP_NAME")){
 			die('please define APP_NAME const');
 		}
-		define(TASK_PATH,APP_ROOT.APP_NAME.DOT);
+		define('TASK_PATH',APP_ROOT.APP_NAME.DOT);
 
 		$this->mode = 'task';
 		$this->env = 'online';

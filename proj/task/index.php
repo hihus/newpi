@@ -1,9 +1,9 @@
 <?php
-define(APP_NAME,'task');
-define(PI_ROOT,dirname(dirname(dirname(__FILE__))).'/pi/');
-define(APP_ROOT,dirname(dirname(__FILE__)).'/');
-define(LOG_PATH,dirname(dirname(dirname(__FILE__))).'/logs');
-define(COM_ROOT,APP_ROOT.'com/');
+define('APP_NAME','task');
+define('PI_ROOT',dirname(dirname(dirname(__FILE__))).'/pi/');
+define('APP_ROOT',dirname(dirname(__FILE__)).'/');
+define('LOG_PATH',dirname(dirname(dirname(__FILE__))).'/logs');
+define('COM_ROOT',APP_ROOT.'com/');
 
 include(PI_ROOT.'Task.php');
 

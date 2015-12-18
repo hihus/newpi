@@ -20,8 +20,14 @@ class App {
 
 	//子类构造函数先完成初始化设置在调用父类的构造函数
 	public function __construct(){
+		//设置主环境
+		ini_set('date.timezone',TIMEZONE);
+		ini_set('internal_encoding',ENCODE);
+		ini_set('output_buffering','On');
+		error_reporting(E_ALL|E_STRICT|E_NOTICE);
+
 		//设置是否开启调试,线上环境不要开启
-		if(defined('__PI_EN_DEBUG') || $_GET['__PI_EN_DEBUG']){
+		if(defined('__PI_EN_DEBUG') || isset($_GET['__PI_EN_DEBUG'])){
 			$this->debug = true;
 		}
 		//必须先设置运行的类型和运行的环境
@@ -104,10 +110,6 @@ class App {
 	}
 
 	protected function _initPhpEnv(){
-		ini_set('date.timezone',TIMEZONE);
-		ini_set('internal_encoding',ENCODE);
-		ini_set('output_buffering','On');
-		error_reporting(E_ALL|E_STRICT|E_NOTICE);
 		set_error_handler(array($this,'errorHandler'));
 		set_exception_handler(array($this,'exceptionHandler'));
 		register_shutdown_function(array($this,'shutdownHandler'));
@@ -177,8 +179,9 @@ class App {
         Pi::inc(Pi::get('LogLib'));
 
 		$logFile = Pi::get('global.logFile','pi');
+		$logSeg = Pi::get('global.logSeg',Logger::NONE_ROLLING);
         $logLevel = ($this->debug === true) ? Logger::LOG_DEBUG : Pi::get('log.level',Logger::LOG_TRACE);
-		$roll = Pi::get('log.roll',Logger::DAY_ROLLING);
+		$roll = Pi::get('log.roll',Logger::NONE_ROLLING);
 		$basic = array('logid'=>$this->appId);
 
 		Logger::init(LOG_PATH,$logFile,$logLevel,array(),$roll);
@@ -219,8 +222,8 @@ class App {
 	}
 
 	function shutdownHandler(){
-		$res = $this->timer->getResult();
 		if($this->debug && !empty($res)){
+			$res = $this->timer->getResult();
 			$str[] = '[time:';
 			foreach($res as $time) {
 				$str[] = ' '.$time[0].'='.$time[1];
