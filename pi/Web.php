@@ -39,53 +39,45 @@ class WebApp extends App {
 		}
 	}
 	function errorHandler(){
-		restore_error_handler();
-		$res = false;
-		$error = func_get_args();
-
-		set_error_handler(array($this,'errorHandler'));
-		return $res;
+		parent::errorHandler();
+		self::page_5xx();
 	}
 	function exceptionHandler($ex){
-		restore_exception_handler();
-		$errcode = $ex->getMessage();
-		$code = $ex->getCode();
-		$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
-		if (($pos = strpos($errcode,' '))) {
-			$errcode = substr($errcode,0,$pos); 
-		}
-		$this->status = $errcode;
-		Logger::fatal($errmsg);
+		parent::exceptionHandler($ex);
+		self::page_4xx();
 	}
+	
 	function page_4xx(){
-
+		include(APP_ROOT.APP_NAME.'/4xx.html');
+		exit;
 	}
 	function page_5xx(){
-		
+		include(APP_ROOT.APP_NAME.'/5xx.html');
+		exit;
 	}
 	public function run(){
 		//test com autoload
-		$login = new Logic_Login_Login();
-		$login->login();
-		//test model autoload
-		$log_table = new Model_login_UserLogin();
-		$log_table->doLogin();
-		//test the extend picom
-		$com_login = picom("login","find");
-		$com_login->find();
-		//test picom load
-		$com_login = picom("login");
-		$com_login->dologin();
-		//pipe可以定义成配置数组。方便上下线
-		$this->pipe->loadPipes('WebTestPipe');
-		$this->pipe->loadPipes('DTestPipe','default');
-		$this->pipe->execute('WebTestPipe');
-		$this->pipe->execute('DTestPipe');
-		//test util 
-		$xz = new Xcrypt();
-		$num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
-		$res = $xz->encode($num);
-		echo $res;
+		// $login = new Logic_Login_Login();
+		// $login->login();
+		// //test model autoload
+		// $log_table = new Model_login_UserLogin();
+		// $log_table->doLogin();
+		// //test the extend picom
+		// $com_login = picom("login","find");
+		// $com_login->find();
+		// //test picom load
+		// $com_login = picom("login");
+		// $com_login->dologin();
+		// //pipe可以定义成配置数组。方便上下线
+		// $this->pipe->loadPipes('WebTestPipe');
+		// $this->pipe->loadPipes('DTestPipe','default');
+		// $this->pipe->execute('WebTestPipe');
+		// $this->pipe->execute('DTestPipe');
+		// //test util 
+		// $xz = new Xcrypt();
+		// $num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
+		// $res = $xz->encode($num);
+		// echo $res;
 		//初始化pipe
 		$default_pipe = array('WebReqPipe'=>'default','WebRouterPipe'=>'default');
 		$pipes = Pi::get('global.pipes',array());

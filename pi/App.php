@@ -213,14 +213,24 @@ class App {
 		restore_exception_handler();
 		$errcode = $ex->getMessage();
 		$code = $ex->getCode();
-		$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
-		if (($pos = strpos($errcode,' '))) {
-			$errcode = substr($errcode,0,$pos); 
+		if($this->needToLog($code)){
+			$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
+			if (($pos = strpos($errcode,' '))) {
+				$errcode = substr($errcode,0,$pos); 
+			}
+			$this->status = $errcode;
+			Logger::fatal($errmsg);
 		}
-		$this->status = $errcode;
-		Logger::fatal($errmsg);
 	}
-
+	//不需要记录日志的异常值代码，防止有些没有意义的记录冲刷日志,取核心代码和项目代码的两个配置
+	protected function needToLog($code){
+		$core_no_need_log_code = Conf::get('global.nolog_exception',array());
+		$app_no_need_log_code = Pi::get('global.nolog_exception',array());
+		if(isset($core_no_need_log_code[$code]) || isset($app_no_need_log_code[$code])){
+			return false;
+		}
+		return true;
+	}
 	function shutdownHandler(){
 		if($this->debug && !empty($res)){
 			$res = $this->timer->getResult();

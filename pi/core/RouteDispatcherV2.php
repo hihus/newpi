@@ -19,9 +19,9 @@ class RouteDispatcher {
 	}
 
 	public function run(){
-		$dispatcher->buildQuery();
-		$dispatcher->customRouter();
-		$dispatcher->dispatch();
+		$this->buildQuery();
+		$this->customRouter();
+		$this->dispatch();
 	}
 
 	public function buildQuery(){
