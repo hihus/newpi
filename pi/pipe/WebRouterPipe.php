@@ -12,7 +12,7 @@ class WebRouterPipe implements Ipipe {
 	public function execute(App $app){
 		//开始路由,query参数需要有url和param两个变量。方便路由选择
 		$dispatcher = new RouteDispatcher();
-		$dispatcher->route();
+		$dispatcher->run();
 	}
 //end of class
 }

@@ -38,7 +38,31 @@ class WebApp extends App {
 			die('can not init the template engine class');
 		}
 	}
+	function errorHandler(){
+		restore_error_handler();
+		$res = false;
+		$error = func_get_args();
 
+		set_error_handler(array($this,'errorHandler'));
+		return $res;
+	}
+	function exceptionHandler($ex){
+		restore_exception_handler();
+		$errcode = $ex->getMessage();
+		$code = $ex->getCode();
+		$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
+		if (($pos = strpos($errcode,' '))) {
+			$errcode = substr($errcode,0,$pos); 
+		}
+		$this->status = $errcode;
+		Logger::fatal($errmsg);
+	}
+	function page_4xx(){
+
+	}
+	function page_5xx(){
+		
+	}
 	public function run(){
 		//test com autoload
 		$login = new Logic_Login_Login();
