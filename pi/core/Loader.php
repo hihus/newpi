@@ -6,16 +6,17 @@ Pi::inc(PI_CORE.'Export.php');
 function picom($mod,$add = '',$is_server = false){
 	$mod = strtolower($mod);
 	$add = strtolower($add);
-	//服务器端自身模块不再远程调用
-	static $rpc_mod = array();
-	if($is_server !== false){
-		$rpc_mod[$mod] = 1;
+	//加载一次
+	static $loaded_mod = array();
+	if(isset($loaded_mod[$mod.$add])){
+		return $loaded_mod[$mod.$add];
 	}
 	//客户端是否走远程加载
 	$rpc_conf = Pi::get('proxy.'.$mod,array());
-	if(!empty($rpc_conf) && $is_server === false && !isset($rpc_mod[$mod])){
+	if(!empty($rpc_conf) && $is_server === false){
 		Pi::inc(PI_CORE.'Proxy.php');
-		$rpc = new PI_PRC($mod,$add,$rpc_conf);
+		$rpc = new Abs_PiCom($mod,$add,$rpc_conf);
+		$loaded_mod[$mod.$add] = $rpc;
 		return $rpc;
 	}
 
@@ -36,6 +37,7 @@ function picom($mod,$add = '',$is_server = false){
 			if(!is_subclass_of($class,'Export')){
 				throw new Exception('the class '.$cls.' is not the subclass of Export',1002);
 			}
+			$loaded_mod[$mod.$add] = $class;
 			return $class;
 		}else{
 			throw new Exception('can not find picom class '.$cls.' from '.$file,1003);

@@ -36,14 +36,32 @@ class ApiApp extends App {
 		if(!isset($_SESSION)) {session_start();}
 	}
 
-	public function run(){
-		//初始化pipe
-		$default_pipe = array('ApiReqPipe'=>'default','ApiHttpRouterPipe'=>'default');
-		$pipes = Pi::get('global.pipes',array());
-		if(empty($pipes)){
-			$pipes = $default_pipe;
+	protected function _checkInnerApi(){
+		$sign = Pi::get('global.innerapi_sign','');
+		$sign_name = Pi::get('global.innerapi_sign_name','_pi_inner_nm');
+		if(Comm::req($sign_name) == $sign){
+			return true;
 		}
-		$this->pipeLoadContainer = $pipes;
-		parent::run();
+		return false;
+	}
+
+	public function run(){
+		//内网api调用
+		if($this->_checkInnerApi()){
+			Pi::inc(PI_CORE.'Proxy.php');
+			ob_start();
+			echo Abs_PiCom::Server();
+			ob_end_flush();
+			exit;
+		}else{
+			//初始化pipe
+			$default_pipe = array('ApiReqPipe'=>'default','ApiHttpRouterPipe'=>'default');
+			$pipes = Pi::get('global.pipes',array());
+			if(empty($pipes)){
+				$pipes = $default_pipe;
+			}
+			$this->pipeLoadContainer = $pipes;
+			parent::run();
+		}
 	}
 }

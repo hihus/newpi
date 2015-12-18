@@ -38,7 +38,7 @@ class Pi {
 				array_pop($file);
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
-				$file = APP_CONF_PATH.$file.$file_name.'.inc.php';
+				$file = COM_CONF_PATH.$file.$file_name.'.inc.php';
 				if(self::inc($file) && isset(self::$saConfData[$key])){
 					return self::$saConfData[$key];
 				}

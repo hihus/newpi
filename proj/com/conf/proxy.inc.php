@@ -1,4 +1,4 @@
 <?php
 
 
-Pi::set('proxy.search',array('net'=>'http','data'=>'serialize','ip'=>'127.0.0.1'));
+Pi::set('proxy.login',array('net'=>'http','data'=>'serialize','ip'=>'api.hihu.com'));

@@ -57,27 +57,30 @@ class WebApp extends App {
 	}
 	public function run(){
 		//test com autoload
-		// $login = new Logic_Login_Login();
-		// $login->login();
-		// //test model autoload
-		// $log_table = new Model_login_UserLogin();
-		// $log_table->doLogin();
-		// //test the extend picom
-		// $com_login = picom("login","find");
-		// $com_login->find();
-		// //test picom load
-		// $com_login = picom("login");
-		// $com_login->dologin();
-		// //pipe可以定义成配置数组。方便上下线
-		// $this->pipe->loadPipes('WebTestPipe');
-		// $this->pipe->loadPipes('DTestPipe','default');
-		// $this->pipe->execute('WebTestPipe');
-		// $this->pipe->execute('DTestPipe');
-		// //test util 
-		// $xz = new Xcrypt();
-		// $num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
-		// $res = $xz->encode($num);
-		// echo $res;
+		$login = new Logic_Login_Login();
+		$login->login();
+		//test model autoload
+		$log_table = new Model_login_UserLogin();
+		$log_table->doLogin();
+		//test the extend picom
+		
+		$com_login = picom("login","find");
+		$res = $com_login->find();
+		var_export($res);
+		//test picom load
+		$com_login = picom("login");
+		$res = $com_login->dologin();
+		var_export($res);
+		//pipe可以定义成配置数组。方便上下线
+		$this->pipe->loadPipes('WebTestPipe');
+		$this->pipe->loadPipes('DTestPipe','default');
+		$this->pipe->execute('WebTestPipe');
+		$this->pipe->execute('DTestPipe');
+		//test util 
+		$xz = new Xcrypt();
+		$num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
+		$res = $xz->encode($num);
+		echo $res;
 		//初始化pipe
 		$default_pipe = array('WebReqPipe'=>'default','WebRouterPipe'=>'default');
 		$pipes = Pi::get('global.pipes',array());
