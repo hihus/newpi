@@ -2,7 +2,7 @@
 class ApiRouter {
 	public $app = null;
 	public function __construct(App $app){
-		$this->$app = $app;
+		$this->app = $app;
 	}
 
 	public function dispatch(){
@@ -53,7 +53,7 @@ class ApiRouter {
 		}
 		$res = $this->_call_method($cls,$func);
 		if($res === false){
-			throw new Exception('api class:'.$class.' call method $func err ',1011);
+			throw new Exception('api class:'.$class.' call method '.$func.' err ',1011);
 		}
 	}
 

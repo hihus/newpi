@@ -5,8 +5,8 @@ class ApiHttpRouterPipe implements Ipipe {
 	
 	public function execute(App $app){
 		$this->app = $app;
- 		$router = Pi::get('global.router_file','ApiRouter.php');
-		$router_class = Pi::get('global.router_class','ApiRouter');
+ 		$router = Conf::get('global.router_file','ApiRouter.php');
+		$router_class = Conf::get('global.router_class','ApiRouter');
 		if(is_readable(PI_CORE.$router)){
 			Pi::inc(PI_CORE.$router);
 		}else{

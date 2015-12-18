@@ -1,7 +1,7 @@
 <?php
 
 Class Comm {
-
+	
 	static function getClientIp(){
 		if (isset($_SERVER['HTTP_CLIENT_IP']) and !empty($_SERVER['HTTP_CLIENT_IP'])){
 			return _IPFilter($_SERVER['HTTP_CLIENT_IP']);

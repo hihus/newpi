@@ -53,26 +53,15 @@
 
 	待补充。。。
 
+	目录说明:
+		1 pi目录,核心代码
+		2 工程核心目录 proj/com
+		3 工程示例目录 proj/task , proj/api , proj/web 
 
+##todo list
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	1 思考更好的web路由方式,打算实现在 pi/core/RouteDispatcherV2.php
+	2 cache,db,queue 库更换更好的
+	3 远程调用添加，目前打算在picom 用魔术方法和api实现远程调用
+	4 web,api项目错误重定向页面和返回值（是现在自己项目的errorhandler和exceptionhandler）
+	5 好的类库补充
