@@ -15,7 +15,7 @@
 	 * @param array 	$params 表单参数
 	 * @param string 	$secret 密钥
 	 */
-    public function makeSign($method, $uri, $params, $secret) 
+    static function makeSign($method, $uri, $params, $secret) 
     {
         $mk = $this->makeSource($method, $uri, $params);
         $my_sign = hash_hmac('sha1', $mk, strtr($secret, '-_', '+/'), true);
@@ -24,7 +24,7 @@
         return $my_sign;
     }
     
-	private function makeSource($method, $uri, $params) 
+	static function makeSource($method, $uri, $params) 
     {
         $strs = strtoupper($method) . '&' . rawurlencode($uri) . '&';
 

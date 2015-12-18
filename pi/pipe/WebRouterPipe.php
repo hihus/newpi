@@ -2,7 +2,7 @@
 
 class WebRouterPipe implements Ipipe {
 	public function __construct(){
-		$dispatcher = Pi::get('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
+		$dispatcher = Conf::get('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
 		if(file_exists($dispatcher)){
 			Pi::inc($dispatcher);
 		}else{
@@ -12,9 +12,7 @@ class WebRouterPipe implements Ipipe {
 	public function execute(App $app){
 		//开始路由,query参数需要有url和param两个变量。方便路由选择
 		$dispatcher = new RouteDispatcher();
-		$dispatcher->buildQuery();
-		$dispatcher->customRouter();
-		$dispatcher->dispatch();
+		$dispatcher->route();
 	}
 //end of class
 }

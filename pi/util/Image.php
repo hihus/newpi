@@ -144,7 +144,6 @@ class Image {
 		if(is_array($extValues)) {//若外部参数传入值为 $extValues=1,此时表示使用默认的值打水印
 			$values=array_merge($values,$extValues);
 		}
-		Logger::debug("watermark been called,the input params type=$type, values=".print_r($values,true));
 		//参数检查
 		if(empty($type)){
 			$type=ImageDef::WATERMARK_TYPE_TEXT;
@@ -306,7 +305,6 @@ class Image {
 			}
 			$draw->setGravity(imagick::GRAVITY_CENTER);
 			if($position>9||$position<0){
-				Logger::debug("Image.u_arg $position should be at 0--9");
 				$position=ImageDef::DEFAULT_WATERMARK_POSITION;
 			}
 			//整个页面都打水印
@@ -315,7 +313,6 @@ class Image {
 				$distanceHeight=intval(ImageDef::DEFAULT_WATERMARK_HEIGHT_RATE * $height);
 				for($j=0;$j<$width+$height;$j+=$distanceHeight)
 					for($i=0;$i<$width;$i+=$distanceWidth){
-						Logger::debug("been called \n");
 						$this->imagick->annotateImage($draw,$i-$width/2,$j-$height/2,floatval($rotate),$text);
 					}
 				return;

@@ -1,5 +1,5 @@
 <?php
-//web路由器v1
+//web路由器v2版
 class RouteDispatcher {
 	private $uri = null;
 	private $host = '';

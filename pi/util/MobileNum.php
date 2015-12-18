@@ -14,7 +14,7 @@ final class MobileNum {
      * @param string $nation 国别，目前仅支持中国大陆
      * @return boolean
      */
-    public function isValidMobileNum($mobile_number, $nation = 'China/Mainland') {
+    static function isValidMobileNum($mobile_number, $nation = 'China/Mainland') {
         // 电话号码判断，包括虚拟运营商号段
         /**
          * 移动号码段: 134、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188
