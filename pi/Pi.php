@@ -6,7 +6,7 @@
 
 if(!defined("PI_ROOT")) define("PI_ROOT",dirname(__FILE__).'/');
 
-//定义框架核心类
+//定义框架核心类,加载核心配置包括
 class Pi {
 	private static $saIncludeFiles = array();
 	private static $saIsLoaded = array();
@@ -47,28 +47,13 @@ class Pi {
 		return $default;
 	}
 
-	static function set($key,$value){
-		self::$saConfData[$key] = $value;
-	}
-
-	static function has($key){
-		return isset(self::$saConfData[$key]);
-	}
-
-	static function delItem($key){
-		if(self::has($key)){
-			unset(self::$saConfData[$key]);
-			return true;
-		}
-		return false;
-	}
-
-	static function clear(){
-		self::$saIsLoaded = array();
-		self::$saConfData = array();
-	}
+	static function set($key,$value){self::$saConfData[$key] = $value; }
+	static function has($key){return isset(self::$saConfData[$key]); }
+	static function clear(){self::$saIsLoaded = array(); self::$saConfData = array(); }
+	static function delItem($key){if(self::has($key)){unset(self::$saConfData[$key]); } } 
 }
-//应用配置加载类
+
+//应用配置加载类，如只给web项目的配置用这个加载
 class Conf {
 
 	private static $saIsLoaded = array();
@@ -95,26 +80,10 @@ class Conf {
 		return $default;
 	}
 
-	static function set($key,$value){
-		self::$saConfData[$key] = $value;
-	}
-
-	static function has($key){
-		return isset(self::$saConfData[$key]);
-	}
-
-	static function delItem($key){
-		if(self::has($key)){
-			unset(self::$saConfData[$key]);
-			return true;
-		}
-		return false;
-	}
-
-	static function clear(){
-		self::$saIsLoaded = array();
-		self::$saConfData = array();
-	}
+	static function set($key,$value){self::$saConfData[$key] = $value; }
+	static function has($key){return isset(self::$saConfData[$key]); }
+	static function clear(){self::$saIsLoaded = array(); self::$saConfData = array(); }
+	static function delItem($key){if(self::has($key)){unset(self::$saConfData[$key]); } } 
 }
 
 //加载基础配置
