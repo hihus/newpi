@@ -25,3 +25,4 @@ Pi::set('global.innerapi_sign','kjsdgiu3kiusdf982o3sdfo034s');
 Pi::set('global.innerapi_sign_name','_pi_inner_nm');
 
 //其他配置
+
