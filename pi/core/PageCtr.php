@@ -47,7 +47,7 @@ class PageCtr {
 		return Comm::getCookie($k,$def);
 	}
 
-	protected function echo($str){
+	protected function _echo($str){
 		echo $str;
 	}
 	protected function setCookie($name,$value,$expire = '',$path = '/'){

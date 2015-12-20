@@ -39,6 +39,7 @@ class WebApp extends App {
 		}
 	}
 	function errorHandler(){
+		print_r(debug_backtrace());
 		parent::errorHandler();
 		self::page_5xx();
 	}
