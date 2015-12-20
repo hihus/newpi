@@ -47,6 +47,9 @@ class PageCtr {
 		return Comm::getCookie($k,$def);
 	}
 
+	protected function echo($str){
+		echo $str;
+	}
 	protected function setCookie($name,$value,$expire = '',$path = '/'){
 		return Comm::setCookie($name,$value,$expire,$path);
 	}
@@ -59,8 +62,11 @@ class PageCtr {
 		return Comm::getSession($name,$def);
 	}
 
-	public function assign($k,$v){
-		$this->tpl->assign($k,Comm::filterOutput($v));
+	public function assign($k,$v,$is_remove_xss = false){
+		if($is_remove_xss !== false){
+			$v = Comm::filterOutput($v);
+		}
+		$this->tpl->assign($k,$v);
 	}
 
 	protected function display($tmpl){

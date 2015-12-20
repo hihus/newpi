@@ -10,7 +10,6 @@ class Abs_PiCom {
 		$this->add = $add;
 		$this->conf = $conf;
 	}
-	
 
 	public function __call($n,$r){
 		$s = new PI_RPC();
