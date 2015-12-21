@@ -62,7 +62,6 @@ class PI_RPC {
 			try {
 				$curl = new HttpClient();
 				$res = $curl->sendPostData($conf['ip'],$args);
-				Logger::Trace("post res: %s",var_export($res,true));
 				if(isset($res['content'])){
 					return unserialize($res['content']);
 				}else{
