@@ -65,6 +65,8 @@ class PI_RPC {
 				Logger::Trace("post res: %s",var_export($res,true));
 				if(isset($res['content'])){
 					return unserialize($res['content']);
+				}else{
+					return unserialize($res);
 				}
 				throw new Exception("inner api err conf : ".var_export($conf),5011);
 			} catch (Exception $e) {
