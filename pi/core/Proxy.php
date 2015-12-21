@@ -60,8 +60,9 @@ class PI_RPC {
 			$args['param'] = $params;
 			$args[$sign_name] = $sign;
 			try {
-				$curl = new Curl();
-				$res = $curl->post($conf['ip'],$args);
+				$curl = new HttpClient();
+				$res = $curl->sendPostData($conf['ip'],$args);
+				var_dump($res);
 				if(isset($res['content'])){
 					return unserialize($res['content']);
 				}
