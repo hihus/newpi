@@ -7,7 +7,7 @@
  * Copyright 2015, Angel Lai
  * Released under the MIT license
  */
-class Db 
+class Medoo 
 {
 	// General
 	protected $database_type;
@@ -40,8 +40,10 @@ class Db
 	protected $logs = array();
 
 	protected $debug_mode = false;
-
-	public function __construct($options = null)
+	public function __construct($options = null){
+		$this->init($options);
+	}
+	public function init($options = null)
 	{
 		try {
 			$commands = array();
@@ -167,7 +169,7 @@ class Db
 		return $this->pdo->query($query);
 	}
 
-	public function exec($query)
+	protected function exec($query)
 	{
 		if ($this->debug_mode)
 		{
@@ -901,6 +903,18 @@ class Db
 		$query = $this->query($this->select_context($table, $join, $column, $where, 'SUM'));
 
 		return $query ? 0 + $query->fetchColumn() : false;
+	}
+
+	public function commit(){
+		return $this->pdo->commit();
+	}
+
+	public function beginTransaction(){
+		return $this->pdo->beginTransaction();
+	}
+
+	public function rollBack(){
+		return $this->pdo->rollBack();
 	}
 
 	public function action($actions)

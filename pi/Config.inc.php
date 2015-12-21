@@ -12,7 +12,7 @@ Pi::set('MUST_CONST',array('PI_ROOT','APP_ROOT','COM_ROOT'));
 Pi::set('COM_DIR',array('export','lib','logic','model','conf'));
 Pi::set('DefaultInputPipe','InputPipe');
 Pi::set('DefaultOutputPipe','OutputPipe');
-Pi::set('DbLib',PI_CORE.'db'.DOT.'medoo.php');
+Pi::set('DbLib',PI_CORE.'db'.DOT.'db.php');
 Pi::set('MemcacheLib',PI_CORE.'cache'.DOT.'Memcache.php');
 Pi::set('RedisLib',PI_CORE.'cache'.DOT.'Redis.php');
 Pi::set('LogLib',PI_CORE.'log'.DOT.'Log.php');
