@@ -13,6 +13,7 @@ function picom($mod,$add = '',$is_server = false){
 	}
 	//客户端是否走远程加载
 	$rpc_conf = Pi::get('proxy.'.$mod,array());
+	var_dump($rpc_conf);
 	if(!empty($rpc_conf) && $is_server === false){
 		Pi::inc(PI_CORE.'Proxy.php');
 		$rpc = new Abs_PiCom($mod,$add,$rpc_conf);
