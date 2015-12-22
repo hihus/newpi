@@ -23,7 +23,7 @@ class Mem extends PICacheAbstract{
         $conf = Pi::get('cache.'.$name,array());
         if(empty($conf)) return null;
         foreach($conf as $server){
-            if(!isset($server['host']) || !isset($server['host']) || !isset($server['unit']) ||
+            if(!isset($server['host']) || !isset($server['port']) ||
                !isset($server['port']) || !isset($server['pconnect']
             )){
                 return null;
@@ -36,16 +36,23 @@ class Mem extends PICacheAbstract{
 }
 
 class MemInner extends PICacheAbstract{
-    public function __construct($conf){
+    public $cache_type = 'memcache'; // memcache 和 memcached
+    public function __construct($conf,$type = 'memcache'){
         if(!is_array($conf) || empty($conf)){
             return null;
         }
-
-        $this->conn = new Memcache();
-        
-        foreach ($conf as $s) {
-            $this->conn->addServer($s['host'],$s['port'],$s['persistent']);
-        }
+        if($type == 'memcached'){
+            $this->conn = new Memcache();
+            foreach ($conf as $s) {
+                $this->conn->addServer($s['host'],$s['port'],$s['pconnect']);
+            }
+        }else{
+            $this->conn = new Memcached();
+            $this->cache_type = 'memcached';
+            foreach ($conf as $s) {
+                $this->conn->addServer($s['host'],$s['port']);
+            }
+        }   
     }
 
     /**
@@ -54,12 +61,29 @@ class MemInner extends PICacheAbstract{
     * @param int $ttl
     * @return boolean
     */
-    public function set($id, $data, $ttl = null){
-        if (null === $ttl) {
-            $ttl = $this->options['ttl'];
+    public function set($id, $data, $ttl = 86400){
+        if($this->cache_type == 'memcache'){
+            return $this->conn->set($id, $data,0,$ttl);
+        }else{
+            return $this->conn->set($id, $data, $ttl);
         }
-        return $this->conn->set($id, $data, empty($this->options['compressed']) ? 0 : MEMCACHE_COMPRESSED, $ttl);
+        
     }
+
+    /**
+     * Get Cache Data
+     *
+     * @param mixed $id
+     * @return array
+     */
+    public function get($id){
+        if($this->cache_type == 'memcache'){
+            return $this->conn->get($id);
+        }else{
+            return is_array($id) ? $this->conn->getMulti($id) : $this->conn->get($id);
+        }
+    }
+
 }
 
 
