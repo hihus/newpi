@@ -43,8 +43,8 @@ class MemInner extends PICacheAbstract{
 
         $this->conn = new Memcache();
         
-        foreach ($conf as $server) {
-            call_user_func_array(array($this->conn, 'addServer'), $server);
+        foreach ($conf as $s) {
+            $this->conn->addServer($s['host'],$s['port'],$s['persistent']);
         }
     }
 
