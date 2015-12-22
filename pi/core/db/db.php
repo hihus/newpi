@@ -17,19 +17,25 @@ class Db {
 		}
 		return self::$instance[$name];
 	}
-
+	public static function delDb($name){
+		if(isset(self::$instance[$name])){
+			unset(self::$instance[$name]);
+		}
+	}
 	//解析配置文件
 	private static function getConfig($name){
 		$c = Pi::get('db.'.$name,null);
 		$conf = array();
 		if(empty($c) || !is_array($c)) return null;
-		if(!isset($c['master']) && !isset($c['slave'])){
+		if(!isset($c['master']) && isset($c['slave'])){
+			$conf['master'] = $c['slave'];
+		}else if(!isset($c['master']) && !isset($c['slave'])){
 			$conf['master'] = $c;
 		}else{
 			$conf = $c;
 		}
 		foreach($conf as $k => $v){
-			if($k != 'master' || $k != 'slave'){
+			if($k != 'master' && $k != 'slave'){
 				unset($conf[$k]);
 				continue;
 			}
@@ -60,9 +66,10 @@ class PiDb {
 	public $slave_pdo = null;
 	public $current_pdo = null;
 	public $conf = null;
+	public $error_handle = false;
 	private $use_master = false;
 	private $has_proxy = false;
-	private $master_methods = array('rollBack'=>1,'beginTransaction'=>1,'commit'=>1,'insert'=>1,'update'=>1,'delete'=>1,'replace'=>1);
+	private $master_methods = array('lastInsertId'=>1,'rollBack'=>1,'beginTransaction'=>1,'commit'=>1,'insert'=>1,'update'=>1,'delete'=>1,'replace'=>1);
 	private $slave_methods = array('select'=>1,'get'=>1,'has'=>1,'count'=>1,'max'=>1,'min'=>1,'avg'=>1,'sum'=>1);
 	public function __construct($conf){
 		$this->conf = $conf;
@@ -79,9 +86,13 @@ class PiDb {
 	public function isEnableMaster(){
 		return $this->use_master;
 	}
+	//错误开关决定是不是有错误就异常中断
+	public function switch_error($is_open = false){
+		$this->error_handle = $is_open;
+	}
 	//主从库，可能导致logs的值存储在不同的master和slave实例中，影响log()和last_query()
 	//提供以下方法获取
-	public function getLogs($type = 'slave'){
+	public function getLogs($type = 'master'){
 		if($type == 'master' && $this->master_pdo != null){
 			return $this->master_pdo->log();
 		}else if($type == 'slave' && $this->slave_pdo != null){
@@ -89,7 +100,7 @@ class PiDb {
 		}
 		return array();
 	}
-	public function getLastQuery($type = 'slave'){
+	public function getLastQuery($type = 'master'){
 		if($type == 'master' && $this->master_pdo != null){
 			return $this->master_pdo->last_query();
 		}else if($type == 'slave' && $this->slave_pdo != null){
@@ -103,12 +114,12 @@ class PiDb {
 		}
 		if($type == 'master'){
 			if($this->master_pdo == null){
-				$this->master_pdo = new Medoo($conf['master']);
+				$this->master_pdo = new Medoo($this->conf['master']);
 				$this->current_pdo = $this->master_pdo;
 			}
 		}else{
 			if($this->slave_pdo == null){
-				$this->slave_pdo = new Medoo($conf['slave']);
+				$this->slave_pdo = new Medoo($this->conf['slave']);
 				$this->current_pdo = $this->slave_pdo;
 			}
 		}
@@ -121,25 +132,29 @@ class PiDb {
 		if($method == 'action'){
 			return false;
 		}
+		//query() 处理
+		if($method == 'query'){
+			if(!isset($args[0]) || !is_string($args[0])){
+				throw new Exception("db.Error params for method query!",6055);
+			}
+			$pre = preg_match("/^(\s*)select/i", $args[0]);
+			if($pre == 0 || $this->isEnableMaster()){
+				$this->initDb('master');
+			}else{
+				$this->initDb('slave');
+			}
+			
+			$res = $this->current_pdo->query($args[0]);
+			$this->err();
+			return $res;
+		}
+		//其他函数处理
 		if(!$this->has_proxy){
 			$this->initDb('master');
 		}else{
 			if($this->isEnableMaster()){
 				$this->initDb('master');
 			}else{
-				//query() 处理
-				if($method == 'query'){
-					if(!isset($args[0]) || !is_string($args[0])){
-						throw new Exception("db.Error params for method query!",6055);
-					}
-					$pre = preg_match("/^(\s*)select/i", $args[0]);
-					if($pre == 0){
-						$this->initDb('master');
-					}else{
-						$this->initDb('slave');
-					}
-					return $this->current_pdo->query($args[0]);
-				}
 				//默认走salve - select get has count max min avg sum
 				if(isset($this->slave_methods[$method])){
 					$this->initDb('slave');
@@ -150,12 +165,25 @@ class PiDb {
 				}
 			}
 		}
-		return call_user_func_array(array($this->current_pdo, $method), $args);
+		if($this->current_pdo == null){
+			$this->initDb('master');
+		}
+		$res = call_user_func_array(array($this->current_pdo, $method), $args);
+		$this->err();
+		return $res;
 	}
-
+	public function err(){
+		if($this->error_handle && $this->current_pdo != null){
+			$err_code = $this->current_pdo->errorCode();
+			if($err_code != '00000'){
+				throw new Exception('pidb.err : '.$err_code.' - '.var_export($this->current_pdo->error(),true),6044);
+			}
+		}
+	}
 	public function __destruct(){
-		if($this->master_pdo != null){
+		if($this->master_pdo != null && $this->master_pdo->inTransaction()){
 			$this->master_pdo->rollBack();
 		}
 	}
+//end of class
 }

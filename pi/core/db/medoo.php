@@ -719,6 +719,10 @@ class Medoo
 		return count($lastId) > 1 ? $lastId : $lastId[ 0 ];
 	}
 
+	public function lastInsertId(){
+		return $this->pdo->lastInsertId();
+	}
+
 	public function update($table, $data, $where = null)
 	{
 		$fields = array();
@@ -913,6 +917,10 @@ class Medoo
 		return $this->pdo->beginTransaction();
 	}
 
+	public function inTransaction(){
+		return $this->pdo->inTransaction();
+	}
+
 	public function rollBack(){
 		return $this->pdo->rollBack();
 	}
@@ -950,6 +958,11 @@ class Medoo
 	public function error()
 	{
 		return $this->pdo->errorInfo();
+	}
+
+	public function errorCode()
+	{
+		return $this->pdo->errorCode();
 	}
 
 	public function last_query()

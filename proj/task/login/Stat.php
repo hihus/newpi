@@ -10,5 +10,4 @@ class LoginStat extends BaseTask {
 		$log_table = new Model_login_UserLogin();
 		$log_table->doLogin();
 	}
-	
 }
