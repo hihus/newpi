@@ -1,22 +1,7 @@
 <?php
 
-abstract class PICacheAbstract
-{
+abstract class PICacheAbstract {
     public $conn;
-
-    public $options = array(
-        'ttl' => 900
-    );
-
-    /**
-     * Constructor
-     *
-     * @param array $options
-     */
-    public function __construct($options = array())
-    {
-        $this->options = $options + $this->options;
-    }
 
     /**
      * Set cache
@@ -25,8 +10,7 @@ abstract class PICacheAbstract
      * @param mixed $value
      * @return boolean
      */
-    public function __set($key, $value)
-    {
+    public function __set($key, $value){
         return null === $value ? $this->delete($key) : $this->set($key, $value);
     }
 
@@ -36,8 +20,7 @@ abstract class PICacheAbstract
      * @param string $key
      * @return mixed
      */
-    public function __get($key)
-    {
+    public function __get($key){
         return $this->get($key);
     }
 
@@ -47,8 +30,7 @@ abstract class PICacheAbstract
      * @param string $key
      * @return boolean
      */
-    public function __unset($key)
-    {
+    public function __unset($key){
         return $this->delete($key);
     }
 
@@ -58,8 +40,7 @@ abstract class PICacheAbstract
      * @param string $method
      * @param array $args
      */
-    public function __call($method, $args)
-    {
+    public function __call($method, $args){
         return call_user_func_array(array($this->conn, $method), $args);
     }
 }
