@@ -46,14 +46,17 @@ function picom($mod,$add = '',$is_server = false){
 	throw new Exception('can not read mod file: '.$file.' from picom func',1004);
 }
 
-//自动加载,禁止pi框架下的util和工程lib目录下出现存在 _ 的类名
+//自动加载,有下划线的类按照下划线目录加载，没有下划线的去util和lib一级目录加载
+//如果lib和util需要很多倒出类，而且新建了二级目录，可以用下划线方式加载
 function _pi_autoloader_core($class){
 	if(($pos = strpos($class,'_')) !== false){
 		$class = explode('_',$class);
 		if(empty($class)) return false;
+		$first_dir = $class[0];
 		$fileName = array_pop($class);
 		$class = array_map("strtolower",$class);
-		$file = COM_ROOT.implode(DOT,$class).DOT.$fileName.'.php';
+		$root = ($first_dir == 'util') ? PI_ROOT : COM_ROOT;
+		$file = $root.implode(DOT,$class).DOT.$fileName.'.php';
 		if(is_readable($file)){
 			Pi::inc($file);
 		}
