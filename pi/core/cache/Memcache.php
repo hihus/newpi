@@ -41,7 +41,7 @@ class MemInner extends PICacheAbstract{
         if(!is_array($conf) || empty($conf)){
             return null;
         }
-        if($type == 'memcached'){
+        if($type == 'memcache'){
             $this->conn = new Memcache();
             foreach ($conf as $s) {
                 $this->conn->addServer($s['host'],$s['port'],$s['pconnect']);
