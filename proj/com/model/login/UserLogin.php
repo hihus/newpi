@@ -9,7 +9,7 @@ class Model_Login_UserLogin extends PIBaseModel {
 		// 	print_r($l);
 		// }
 		$mem = Mem::get('users');
-		//$mem->set("hihu","100",10*60);
+		$mem->set("hihu","100",10*60);
 		$s = $mem->get("hihu");
 		var_dump($s);
 		$s = new Util_Hihu_Test();
