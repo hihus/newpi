@@ -52,7 +52,7 @@ function _pi_autoloader_core($class){
 	if(($pos = strpos($class,'_')) !== false){
 		$class = explode('_',$class);
 		if(empty($class)) return false;
-		$first_dir = $class[0];
+		$first_dir = strtolower($class[0]);
 		$fileName = array_pop($class);
 		$class = array_map("strtolower",$class);
 		$root = ($first_dir == 'util') ? PI_ROOT : COM_ROOT;
