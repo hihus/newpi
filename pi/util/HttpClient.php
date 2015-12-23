@@ -46,7 +46,7 @@ class HttpClient
 		CURLOPT_ENCODING       => 'gzip, deflate',       //The contents of the Accept-Encoding header in curl request
 		CURLOPT_SSL_VERIFYPEER => false,                 //whether to verify ssl peer's  certificate
 		CURLOPT_HEADER         => false,                 //whether to add response headers to the output
-		CURLOPT_USERAGENT      => 'pi_v2', //default user agent if none is set
+		CURLOPT_USERAGENT      => 'pi_v2_KI023JSD932J', //default user agent if none is set
 		CURLOPT_SSLVERSION     => 1,                     //force cURL to use TLSv1 (prevent it from using SSLv3 ever)
 	];
 

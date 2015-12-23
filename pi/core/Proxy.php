@@ -61,13 +61,16 @@ class PI_RPC {
 			$args[$sign_name] = $sign;
 			try {
 				$curl = new HttpClient();
-				$res = $curl->sendPostData($conf['ip'],$args);
-				if(isset($res['content'])){
-					return unserialize($res['content']);
-				}else{
-					return unserialize($res);
+				$timeout = (isset($conf['timeout'])) ? intval($conf['timeout']) : 10;
+				$res = $curl->sendPostData($conf['ip'],$args,$timeout);
+				if($curl->hasError() === false){
+					if(isset($res['content'])){
+						return unserialize($res['content']);
+					}else{
+						return unserialize($res);
+					}
 				}
-				throw new Exception("inner api err conf : ".var_export($conf),5011);
+				throw new Exception("inner api err conf : ".var_export($conf).' - curl info:'.var_export($res->getErrorMsg(),true),5011);
 			} catch (Exception $e) {
 				throw new Exception("inner api get response err: ".var_export($conf).' and ex:'.$e->getMessage(),5003);
 			}

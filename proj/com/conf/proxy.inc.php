@@ -1,3 +1,3 @@
 <?php
 
-Pi::set('proxy.login',array('net'=>'http','data'=>'serialize','ip'=>'api.hihus.com'));
+Pi::set('proxy.login',array('net'=>'http','data'=>'serialize','ip'=>'api.hihus.com','timeout'=>5));
