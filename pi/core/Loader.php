@@ -1,6 +1,6 @@
 <?php
-
 Pi::inc(PI_CORE.'Export.php');
+Pi::inc(PI_CORE.'Proxy.php')
 
 //加载com模块的函数
 function picom($mod,$add = '',$is_server = false){
@@ -11,15 +11,23 @@ function picom($mod,$add = '',$is_server = false){
 	if(isset($loaded_mod[$mod.$add])){
 		return $loaded_mod[$mod.$add];
 	}
-	//客户端是否走远程加载
-	$rpc_conf = Pi::get('proxy.'.$mod,array());
-	if(!empty($rpc_conf) && $is_server === false){
-		Pi::inc(PI_CORE.'Proxy.php');
-		$rpc = new Abs_PiCom($mod,$add,$rpc_conf);
-		$loaded_mod[$mod.$add] = $rpc;
-		return $rpc;
+	//先检测有没有远程配置，如果没有直接加载类，提高效率
+	$conf_add = ($add == '') ? '' : '#'.$add;
+	$conf_name = 'proxy.'.strtolower($mod).$conf_add;
+	$proxy_conf = Pi::get($conf_name,array());
+	if($is_server === false && !empty($proxy_conf)){
+		//proxy代理类,根据更详细的配置选择哪个接口走远程
+		$class = new Proxy($mod,$add,$proxy_conf);
+		$loaded_mod[$mod.$add] = $class;
+	}else{
+		//直接加载本地逻辑接口
+		$loaded_mod[$mod.$add] = pi_load_export_file($mod,$add);
 	}
+	return $loaded_mod[$mod.$add];
+}
 
+//加载export文件的公用方法
+function pi_load_export_file($mod,$add){
 	if($add == ''){
 		$cls = ucfirst($mod).'Export';
 		$file = EXPORT_ROOT.$mod.DOT.$cls.'.php';
@@ -30,22 +38,22 @@ function picom($mod,$add = '',$is_server = false){
 		throw new Exception('picom can not find mod:'.$mod,',add:'.$add,1001);
 	}
 
-	if(is_readable($file)){
-		Pi::inc($file);
-		if(class_exists($cls)){
-			$class = new $cls();
-			if(!is_subclass_of($class,'Export')){
-				throw new Exception('the class '.$cls.' is not the subclass of Export',1002);
-			}
-			$loaded_mod[$mod.$add] = $class;
-			return $class;
-		}else{
-			throw new Exception('can not find picom class '.$cls.' from '.$file,1003);
-		}
+	if(!is_readable($file)){
+		throw new Exception('can not read mod file: '.$file.' from picom func',1004);
 	}
-	throw new Exception('can not read mod file: '.$file.' from picom func',1004);
-}
 
+	Pi::inc($file);
+	if(class_exists($cls)){
+		$class = new $cls();
+		if(!is_subclass_of($class,'Export')){
+			throw new Exception('the class '.$cls.' is not the subclass of Export',1002);
+		}
+		$class->export_name = $cls;
+		return $class;
+	}else{
+		throw new Exception('can not find picom class '.$cls.' from '.$file,1003);
+	}
+}
 //自动加载,有下划线的类按照下划线目录加载，没有下划线的去util和lib一级目录加载
 //如果lib和util需要很多倒出类，而且新建了二级目录，可以用下划线方式加载
 function _pi_autoloader_core($class){

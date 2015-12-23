@@ -1,27 +1,43 @@
 <?php
 
 //虚拟类
-class Abs_PiCom {
+class Proxy {
 	public $mod = '';
 	public $add = '';
 	public $conf = '';
+	public $instance = null;
 	public function __construct($mod,$add,$conf){
 		$this->mod = $mod;
 		$this->add = $add;
 		$this->conf = $conf;
 	}
-
-	public function __call($n,$r){
-		$s = new PI_RPC();
-		return $s->req($n,$r,$this->mod,$this->add,$this->conf);
+	//如果接口方法不需要走远程调用，实例化本地类
+	public function __call($method,$args){
+		//在远程调用配置里面的接口走远程调用
+		if(isset($this->conf['#all']) || isset($this->conf[$method])){
+			$conf = isset($this->conf['#all']) ? $this->conf['#all'] : $this->conf[$method];
+			$rpc = new PI_RPC();
+			return $rpc->call($method,$args,$this->mod,$this->add,$conf);
+		}else{
+			pi_load_export_file($this->mod,$this->add);
+			if (!is_callable(array($this->instance,$method))){
+				throw new Exception("proxy.err $mod $add no method $method",5009);
+			}
+			return pi_call_method($this->instance,$method,$args);
+		}
 	}
 	public function __set($n,$v){
-		throw new Exception("the com that support rpc can not set var", 5001);
+		throw new Exception("proxy.err the com that support rpc can not set var", 5001);
 	}
 	public function __get($n){
-		throw new Exception("the com that support rpc can not get var", 5002);
+		throw new Exception("proxy.err the com that support rpc can not get var", 5002);
 	}
+//end of class
+}
 
+//proxy server
+
+class ProxyServer {
 	static function Server(){
 		$mod = Comm::req('mod');
 		$add = Comm::req('add');
@@ -33,23 +49,32 @@ class Abs_PiCom {
 	            $reflection = new ReflectionMethod($class,$method);
 	            $argnum = $reflection->getNumberOfParameters();
 	            if ($argnum > count($args)) {
-	                    throw new Exception('inner api err args for class:'.$mod.' - '.$add.' - '.var_export($args),5009);
+	                self::output("inner api call the $method from $mod $add err arg",5010);
 	            }
 	            //公共方法才允许被调用
 	            $res = $reflection->invokeArgs($class,$args);
-	            return serialize($res);
+	            self::output($res);
 	        }
-			return serialize(array('err'=>5010));
+			self::output("inner api callable the $mod $add from $method fail",5009);
 		} catch (Exception $e) {
-			return serialize(array('err'=>5008));
+			self::output("inner api load the $mod $add from $method fail",5008);
 		}
 	}
-//end of class
+	static function ouput($info,$err_code = false){
+		ob_start();
+		if($err_code === false){
+			echo serialize($info);
+		}else{
+			echo serialize(array(INNER_ERR=>$err_code,'msg'=>$info));
+		}
+		ob_end_flush();
+		exit;
+	}
 }
 
-//网络操作
+//RPC网络操作
 class PI_RPC {
-	public function req($method,$params,$mod,$add,$conf){
+	public function call($method,$params,$mod,$add,$conf){
 		$sign = Pi::get('global.innerapi_sign','');
 		$sign_name = Pi::get('global.innerapi_sign_name','_pi_inner_nm');
 		if(isset($conf['ip']) && isset($conf['net']) && $conf['net'] == 'http'){
@@ -65,14 +90,16 @@ class PI_RPC {
 				$res = $curl->sendPostData($conf['ip'],$args,$timeout);
 				if($curl->hasError() === false){
 					if(isset($res['content'])){
-						return unserialize($res['content']);
+						$data = unserialize($res['content']);
 					}else{
-						return unserialize($res);
+						$data = unserialize($res);
 					}
+					return $data;
+				}else{
+					throw new Exception("curl err",5011);
 				}
-				throw new Exception("inner api err conf : ".var_export($conf).' - curl info:'.var_export($res->getErrorMsg(),true),5011);
 			} catch (Exception $e) {
-				throw new Exception("inner api get response err: ".var_export($conf).' and ex:'.$e->getMessage(),5003);
+				return array(INNER_ERR=>5011,'msg'=>$curl->getErrorMsg());
 			}
 		}
 		throw new Exception("inner api err conf : ".var_export($conf),5004);

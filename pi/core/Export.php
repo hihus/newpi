@@ -7,8 +7,9 @@
  **/
 
 class Export {
+	public $export_name = '';
 	public function __construct(){
-		
+
 	}
 //end of class
 }

@@ -51,25 +51,20 @@ class ApiRouter {
 		if(!is_subclass_of($cls,'BaseApi')){
 			throw new Exception('api.err is not the subclass of BaseApi ',1010);
 		}
-		$res = $this->_call_method($cls,$func);
-		if($res === false){
+		if (!is_callable(array($cls,$func))){
 			throw new Exception('api class:'.$class.' call method '.$func.' err ',1011);
 		}
+		$res = pi_call_method($cls,$func);
+		$this->output($res);
 	}
 
-	private function _call_method($class,$method,$args = array()){
-		if (is_callable(array($class,$method))) {
-            $reflection = new ReflectionMethod($class,$method);
-            $argnum = $reflection->getNumberOfParameters();
-            if ($argnum > count($args)) {
-                    throw new Exception('api.err reflection args not match',1012);
-            }
-            //公共方法才允许被调用
-            $reflection->invokeArgs($class,$args);
-            return true;
-        }
-
-        return false;
+	public function output($info,$err_code = false){
+		ob_start();
+		if($err_code === false){
+			echo json_encode(array('res'=>$info),true);
+		}else{
+			echo json_encode(array('msg'=>$info,INNER_ERR=>$err_code),true);
+		}
+		ob_end_flush();
 	}
-
 }

@@ -169,38 +169,23 @@ class RouteDispatcher {
 		//执行
 		$class = new $cls();
 		try{
-			$this->_call_method($class,'_p_before');
-			$this->_call_method($class,'initTmpl');
-			$this->_call_method($class,'setRouter',array($this));
+			pi_call_method($class,'_p_before');
+			pi_call_method($class,'initTmpl');
+			pi_call_method($class,'setRouter',array($this));
 			if($this->class_pre === 'Ajax'){
-				$this->_call_method($class,'setAjax',array(true));
+				pi_call_method($class,'setAjax',array(true));
 			}
-			$this->_call_method($class,'_before');
-			if(substr($this->func,0,1) == '_' || !$this->_call_method($class,$this->func)){
+			pi_call_method($class,'_before');
+			if(substr($this->func,0,1) == '_' || !pi_call_method($class,$this->func)){
 				throw new Exception('router.err not '.$cls.' can not call : '.$this->func,1025);
 			}
-			$this->_call_method($class,'_after');
-			$this->_call_method($class,'_p_after');
+			pi_call_method($class,'_after');
+			pi_call_method($class,'_p_after');
 		}catch(Exception $ex){
-			$this->_call_method($class,'_after');
-			$this->_call_method($class,'_p_after');
+			pi_call_method($class,'_after');
+			pi_call_method($class,'_p_after');
 			throw $ex;
 		}
-	}
-
-	private function _call_method($class,$method,$args = array()){
-		if (is_callable(array($class,$method))) {
-            $reflection = new ReflectionMethod($class,$method);
-            $argnum = $reflection->getNumberOfParameters();
-            if ($argnum > count($args)) {
-                    throw new Exception('router.err reflection args not match',1024);
-            }
-            //公共方法才允许被调用
-            $reflection->invokeArgs($class,$args);
-            return true;
-        }
-
-        return false;
 	}
 //end of class
 }

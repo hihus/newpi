@@ -37,6 +37,26 @@ class ApiApp extends App {
 		if(!isset($_SESSION)) {session_start();}
 	}
 
+	function exceptionHandler($ex){
+		restore_exception_handler();
+		$errcode = $ex->getMessage();
+		$code = $ex->getCode();
+		if($this->needToLog($code)){
+			$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
+			if (($pos = strpos($errcode,' '))) {
+				$errcode = substr($errcode,0,$pos); 
+			}
+			$this->status = $errcode;
+			Logger::fatal($errmsg);
+		}
+		//内部export调用不需要做异常输出处理
+		if(!defined('USE_INNER_API')){
+			ob_start();
+			echo json_encode(array('msg'=>$errcode,INNER_ERR=>$code),true);
+			ob_end_flush();
+		}
+	}
+
 	protected function _checkInnerApi(){
 		$sign = Pi::get('global.innerapi_sign','');
 		$sign_name = Pi::get('global.innerapi_sign_name','_pi_inner_nm');
@@ -49,11 +69,9 @@ class ApiApp extends App {
 	public function run(){
 		//内网api调用
 		if($this->_checkInnerApi()){
+			define("USE_INNER_API",1);
 			Pi::inc(PI_CORE.'Proxy.php');
-			ob_start();
-			echo Abs_PiCom::Server();
-			ob_end_flush();
-			exit;
+			ProxyServer::Server();
 		}else{
 			//初始化pipe
 			$default_pipe = array('ApiReqPipe'=>'default','ApiHttpRouterPipe'=>'default');

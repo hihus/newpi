@@ -96,5 +96,22 @@ class Conf {
 	static function delItem($key){if(self::has($key)){unset(self::$saConfData[$key]); } } 
 }
 
+//利用反射调用类方法公用函数
+
+function pi_call_method($class,$method,$args = array()){
+	if (is_callable(array($class,$method))){
+        $reflection = new ReflectionMethod($class,$method);
+        $argnum = $reflection->getNumberOfParameters();
+        if ($argnum > count($args)) {
+                throw new Exception('pi.call.err reflection args not match',1024);
+        }
+        //公共方法才允许被调用
+        $reflection->invokeArgs($class,$args);
+        return true;
+    }
+
+    return false;
+}
+
 //加载基础配置
 Pi::inc(PI_ROOT.'Config.inc.php');
