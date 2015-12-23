@@ -10,7 +10,7 @@ class ImgCode {
 	private $img; 
 	private $img_width; 
 	private $img_height; 
-	private $len; 
+	private $len;
 	//随机字符串、y轴坐标值、随机颜色 
 	private $randnum; 
 	private $y; 
