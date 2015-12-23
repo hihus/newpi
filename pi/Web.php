@@ -12,7 +12,8 @@ class WebApp extends App {
 			die('please define APP_NAME const');
 		}
 		$this->mode = 'web';
-		$this->env = Pi::get('env','online');
+		$this->app_env = Pi::get('app_env','');
+		$this->com_env = Pi::get('com_env','');
 		parent::__construct();
 	}
 

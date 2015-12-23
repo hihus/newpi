@@ -11,7 +11,9 @@ include(PI_ROOT.'Web.php');
 
 //web项目需要的框架配置
 Pi::set('global.logFile','web');
-Pi::set('env','dev');
+//代码环境
+Pi::set('com_env','dev');
+Pi::set('app_env','dev');
 
 $app = new WebApp();
 $app->run();

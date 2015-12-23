@@ -11,7 +11,8 @@ class ApiApp extends App {
 			die("app.err please define APP_NAME const \n");
 		}
 		$this->mode = 'api';
-		$this->env = Pi::get('env','online');
+		$this->app_env = Pi::get('app_env','');
+		$this->com_env = Pi::get('com_env','');
 		$data_type = Conf::get("global.data_type",'json');
 		if(isset($this->data_types[$data_type])){
 			$this->data_type = $data_type;

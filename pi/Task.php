@@ -13,7 +13,8 @@ class TaskApp extends App {
 		define('TASK_PATH',APP_ROOT.APP_NAME.DOT);
 
 		$this->mode = 'task';
-		$this->env = 'online';
+		$this->app_env = Pi::get('app_env','');
+		$this->com_env = Pi::get('com_env','');
 		//得到参数
 		if(!empty($argv)){
 			array_shift($argv);

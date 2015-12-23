@@ -11,7 +11,9 @@ include(PI_ROOT.'Api.php');
 
 //api项目需要的框架配置
 Pi::set('global.logFile','api');
-Pi::set('env','dev');// dev test pre online
+//代码环境
+Pi::set('com_env','dev');
+Pi::set('app_env','dev');
 
 $app = new ApiApp($argv);
 $app->run();

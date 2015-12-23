@@ -31,14 +31,19 @@ class Pi {
 		if(isset(self::$saConfData[$key])){
 			return self::$saConfData[$key];
 		}
-		//没有的自动加载文件和配置项
+		//没有的自动加载文件和配置项,先看有没有本环境的配置文件，如果没有加载默认路径下的配置文件
 		if(defined("COM_CONF_PATH") && strpos($key,'.') !== false){
 			$file = explode('.',$key);
 			if(!empty($file)){
 				array_pop($file);
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
-				$file = COM_CONF_PATH.$file.$file_name.'.inc.php';
+				$env = self::get('com_env','');
+				if($env != '' && file_exists($file)){
+					$file = COM_CONF_PATH.$env.DOT.$file.$file_name.'.inc.php';
+				}else{
+					$file = COM_CONF_PATH.$file.$file_name.'.inc.php';
+				}
 				if(self::inc($file) && isset(self::$saConfData[$key])){
 					return self::$saConfData[$key];
 				}
@@ -71,7 +76,12 @@ class Conf {
 				array_pop($file);
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
-				$file = APP_CONF_PATH.$file.$file_name.'.inc.php';
+				$env = get('app_env','');
+				if($env != '' && file_exists($file)){
+					$file = APP_CONF_PATH.$env.DOT.$file.$file_name.'.inc.php';
+				}else{
+					$file = APP_CONF_PATH.$file.$file_name.'.inc.php';
+				}
 				if(Pi::inc($file) && isset(self::$saConfData[$key])){
 					return self::$saConfData[$key];
 				}

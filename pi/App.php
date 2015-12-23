@@ -12,7 +12,8 @@ class App {
 	public $debug = false;  //true false
 	public $appId = 0;
 	public $mode = null;    //exp: web task api com
-	public $env = null;     //exp: dev test pre online
+	public $app_env = '';     //exp: dev test pre online
+	public $com_env = '';     //exp: dev test pre online
 	public $pipe = null;
 	public $pipeContainer = array();
 	public $timer = null;
@@ -33,9 +34,6 @@ class App {
 		//必须先设置运行的类型和运行的环境
 		if(empty($this->mode) || !is_string($this->mode)){
 			die(' pi.err not set or  set a wrong mode ');
-		}
-		if(empty($this->env) || !is_string($this->env)){
-			die(' pi.err not set or  set a wrong env ');
 		}
 
 		$this->appId = $this->_genAppid();

@@ -9,7 +9,9 @@ include(PI_ROOT.'Task.php');
 
 //task项目需要的框架配置
 Pi::set('global.logFile','task');
-Pi::set('env','dev');// dev test pre online
+//代码环境
+Pi::set('com_env','dev');
+Pi::set('app_env','dev');
 
 $app = new TaskApp($argv);
 $app->run();

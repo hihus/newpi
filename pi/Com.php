@@ -7,7 +7,8 @@ class ComApp extends App {
 
 	public function __construct($argv){
 		$this->mode = 'com';
-		$this->env = 'online';
+		$this->app_env = Pi::get('app_env','');
+		$this->com_env = Pi::get('com_env','');
 		parent::__construct();
 	}
 
