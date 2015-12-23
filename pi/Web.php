@@ -73,11 +73,6 @@ class WebApp extends App {
 		$com_login = picom("login");
 		$res = $com_login->dologin();
 		var_export($res);
-		//pipe可以定义成配置数组。方便上下线
-		$this->pipe->loadPipes('WebTestPipe');
-		$this->pipe->loadPipes('DTestPipe','default');
-		$this->pipe->execute('WebTestPipe');
-		$this->pipe->execute('DTestPipe');
 		//test util 
 		$xz = new Xcrypt();
 		$num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
