@@ -5,7 +5,7 @@ final class Xcrypt
 	var $cacheable = true;
 	
     const ID_LENGTH = 12;
-    private $strbase = "5z1GydOFmAU2is7JQIk0BV9EuhWbwZXNjSo3cRgDqCtvfrK4xelanMpH8L6TPY";
+    private $strbase = "5z1GydOFFAU2is7JQIk0BV9EuhWbwZXNjSo3cRgDqCtvfrK4xelanMpH8L6YYY";
     private $key,$length,$codelen,$codenums,$codeext;
 
     function __construct($key = 993.141592653589){
