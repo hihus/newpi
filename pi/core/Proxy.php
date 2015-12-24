@@ -9,11 +9,13 @@ class Proxy {
 	public $add = '';
 	public $conf = '';
 	public $instance = null;
+	
 	public function __construct($mod,$add,$conf){
 		$this->mod = $mod;
 		$this->add = $add;
 		$this->conf = $conf;
 	}
+	
 	//如果接口方法不需要走远程调用，实例化本地类
 	public function __call($method,$args){
 		//在远程调用配置里面的接口走远程调用
@@ -29,17 +31,18 @@ class Proxy {
 			return pi_call_method($this->instance,$method,$args);
 		}
 	}
+	
 	public function __set($n,$v){
-		throw new Exception("proxy.err the com that support rpc can not set var", 5001);
+		throw new Exception('proxy.err the com that support rpc can not set var', 5001);
 	}
+
 	public function __get($n){
-		throw new Exception("proxy.err the com that support rpc can not get var", 5002);
+		throw new Exception('proxy.err the com that support rpc can not get var', 5002);
 	}
 //end of class
 }
 
 //proxy server
-
 class ProxyServer {
 	static function Server(){
 		$mod = Comm::req('mod');
@@ -48,21 +51,22 @@ class ProxyServer {
 		$args = Comm::req('param',array());
 		try {
 			$class = picom($mod,$add,true);
-			if (is_callable(array($class,$method))) {
+			if(is_callable(array($class,$method))){
 	            $reflection = new ReflectionMethod($class,$method);
 	            $argnum = $reflection->getNumberOfParameters();
 	            if ($argnum > count($args)) {
-	                self::output("inner api call the $method from $mod $add err arg",5010);
+	                self::output("inner api call the $method from $mod $add with err args",5010);
 	            }
 	            //公共方法才允许被调用
 	            $res = $reflection->invokeArgs($class,$args);
 	            self::output($res);
 	        }
-			self::output("inner api callable the $mod $add from $method fail",5009);
+			self::output("inner api not callable the $mod $add from $method fail",5009);
 		} catch (Exception $e) {
-			self::output("inner api load the $mod $add from $method fail",5008);
+			self::output("inner api execute the $mod $add from $method fail",5008);
 		}
 	}
+
 	static function output($info,$err_code = false){
 		if($err_code === false){
 			echo serialize(array(INNER_RES_PACK=>$info));

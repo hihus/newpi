@@ -7,7 +7,7 @@
 class WebRouterPipe implements Ipipe {
 	public function __construct(){
 		$dispatcher = Conf::get('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
-		if(!file_exists($dispatcher) || !Pi::inc($dispatcher);){
+		if(!is_readable($dispatcher) || !Pi::inc($dispatcher)){
 			throw new Exception('can not find the dispatcher config : global.dispatcher_path',1032);
 		}
 	}

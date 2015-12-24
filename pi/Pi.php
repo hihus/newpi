@@ -39,7 +39,7 @@ class Pi {
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
 				$env = self::get('com_env','');
-				if($env != '' && file_exists($file)){
+				if($env != '' && is_readable($file)){
 					$file = COM_CONF_PATH.$env.DOT.$file.$file_name.'.inc.php';
 				}else{
 					$file = COM_CONF_PATH.$file.$file_name.'.inc.php';
@@ -77,7 +77,7 @@ class Conf {
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
 				$env = self::get('app_env','');
-				if($env != '' && file_exists($file)){
+				if($env != '' && is_readable($file)){
 					$file = APP_CONF_PATH.$env.DOT.$file.$file_name.'.inc.php';
 				}else{
 					$file = APP_CONF_PATH.$file.$file_name.'.inc.php';

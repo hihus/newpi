@@ -11,7 +11,7 @@ class ApiHttpRouterPipe implements Ipipe {
 		$this->app = $app;
  		$router = Conf::get('global.router_file','ApiRouter.php');
 		$router_class = Conf::get('global.router_class','ApiRouter');
-		if(file_exists(PI_CORE.$router)){
+		if(is_readable(PI_CORE.$router)){
 			Pi::inc(PI_CORE.$router);
 		}else{
 			throw new Exception('api.router can not find the api router : '.$router,1030);

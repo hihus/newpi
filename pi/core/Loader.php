@@ -43,11 +43,10 @@ function pi_load_export_file($mod,$add){
 		throw new Exception('picom can not find mod:'.$mod,',add:'.$add,1001);
 	}
 
-	if(!is_readable($file)){
+	if(!is_readable($file) || !Pi::inc($file)){
 		throw new Exception('can not read mod file: '.$file.' from picom func',1004);
 	}
 
-	Pi::inc($file);
 	if(class_exists($cls)){
 		$class = new $cls();
 		if(!is_subclass_of($class,'Export')){
@@ -59,6 +58,7 @@ function pi_load_export_file($mod,$add){
 		throw new Exception('can not find picom class '.$cls.' from '.$file,1003);
 	}
 }
+
 //自动加载,有下划线的类按照下划线目录加载，没有下划线的去util和lib一级目录加载
 //如果lib和util需要很多倒出类，而且新建了二级目录，可以用下划线方式加载
 function _pi_autoloader_core($class){
@@ -67,7 +67,7 @@ function _pi_autoloader_core($class){
 		if(empty($class)) return false;
 		$first_dir = strtolower($class[0]);
 		$fileName = array_pop($class);
-		$class = array_map("strtolower",$class);
+		$class = array_map('strtolower',$class);
 		$root = ($first_dir == 'util') ? PI_ROOT : COM_ROOT;
 		$file = $root.implode(DOT,$class).DOT.$fileName.'.php';
 		if(is_readable($file)){

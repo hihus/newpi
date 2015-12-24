@@ -18,6 +18,7 @@ class RouteDispatcher {
 								'_p_after'=>1,'initTmpl'=>1,'setRouter'=>1,
 								'setAjax'=>1
 							 );
+
 	public function __construct(){
 		//包含controller需要继承的父类
 		Pi::inc(Pi::get('PageCtr'));
@@ -33,6 +34,7 @@ class RouteDispatcher {
 		$this->host = strtolower(Comm::getHost());
 		$this->uri = strtolower(Comm::getServer('PATH_INFO'));
 	}
+	
 	//自定义路由检查,最后反应到uri变量上,参数用request保存代替
 	public function customRouter($url = null,$domain = ''){
 		$this->setBasePath(APP_CTR_ROOT);
