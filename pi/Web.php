@@ -58,26 +58,6 @@ class WebApp extends App {
 		exit;
 	}
 	public function run(){
-		//test com autoload
-		$login = new Logic_Login_Login();
-		$login->login();
-		//test model autoload
-		$log_table = new Model_login_UserLogin();
-		$log_table->doLogin();
-		//test the extend picom
-		
-		$com_login = picom("login","find");
-		$res = $com_login->find();
-		var_export($res);
-		//test picom load
-		$com_login = picom("login");
-		$res = $com_login->dologin();
-		var_export($res);
-		//test util 
-		$xz = new Xcrypt();
-		$num = rand(10000,20000).rand(10000,20000).rand(10000,20000);
-		$res = $xz->encode($num);
-		echo $res;
 		//初始化pipe
 		$default_pipe = array('WebReqPipe'=>'default','WebRouterPipe'=>'default');
 		$pipes = Pi::get('global.pipes',array());
