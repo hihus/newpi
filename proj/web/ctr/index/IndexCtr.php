@@ -13,7 +13,7 @@ class IndexCtr extends PageCtr {
 		$res = $xz->encode($num);
 		echo $res;
 		$login = picom('login');
-		$res = $login->dologin("111");
+		$res = $login->dologin(array('111'=>1241,'hihu'=>1241));
 		var_dump($res);
 	}
 
