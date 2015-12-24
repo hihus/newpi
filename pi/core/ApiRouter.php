@@ -61,9 +61,9 @@ class ApiRouter {
 	public function output($info,$err_code = false){
 		ob_start();
 		if($err_code === false){
-			echo json_encode(array('res'=>$info),true);
+			echo json_encode(array('res'=>$info));
 		}else{
-			echo json_encode(array('msg'=>$info,INNER_ERR=>$err_code),true);
+			echo json_encode(array('msg'=>$info,INNER_ERR=>$err_code));
 		}
 		ob_end_flush();
 	}

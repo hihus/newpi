@@ -60,10 +60,10 @@ class ProxyServer {
 			self::output("inner api load the $mod $add from $method fail",5008);
 		}
 	}
-	static function ouput($info,$err_code = false){
+	static function output($info,$err_code = false){
 		ob_start();
 		if($err_code === false){
-			echo serialize($info);
+			echo serialize(array(INNER_RES_PACK=>$info));
 		}else{
 			echo serialize(array(INNER_ERR=>$err_code,'msg'=>$info));
 		}
@@ -89,11 +89,8 @@ class PI_RPC {
 				$timeout = (isset($conf['timeout'])) ? intval($conf['timeout']) : 10;
 				$res = $curl->sendPostData($conf['ip'],$args,$timeout);
 				if($curl->hasError() === false){
-					if(isset($res['content'])){
-						$data = unserialize($res['content']);
-					}else{
-						$data = unserialize($res);
-					}
+					$data = unserialize($res);
+					$data = isset($data[INNER_RES_PACK]) ? $data[INNER_RES_PACK] : $data;
 					return $data;
 				}else{
 					throw new Exception("curl err",5011);

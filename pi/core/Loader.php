@@ -1,6 +1,6 @@
 <?php
 Pi::inc(PI_CORE.'Export.php');
-Pi::inc(PI_CORE.'Proxy.php')
+Pi::inc(PI_CORE.'Proxy.php');
 
 //加载com模块的函数
 function picom($mod,$add = '',$is_server = false){

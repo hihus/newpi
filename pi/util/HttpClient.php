@@ -39,7 +39,7 @@ class HttpClient
 	 * @var array
 	 * @access protected
 	 */
-	protected $config = [
+	protected $config = array(
 		CURLOPT_FAILONERROR    => false,                 //whether to fail if http response code is >=400
 		CURLOPT_FOLLOWLOCATION => true,                  //whether to follow any 'Location:..' header from response
 		CURLOPT_AUTOREFERER    => true,                  //whether to automatically set referer for http redirections
@@ -48,7 +48,7 @@ class HttpClient
 		CURLOPT_HEADER         => false,                 //whether to add response headers to the output
 		CURLOPT_USERAGENT      => 'pi_v2_KI023JSD932J', //default user agent if none is set
 		CURLOPT_SSLVERSION     => 1,                     //force cURL to use TLSv1 (prevent it from using SSLv3 ever)
-	];
+	);
 
 	/**
 	 * CurlHttpClient constructor
@@ -331,7 +331,7 @@ class HttpClient
 		//if cookie is sent as key=>value array
 		if (is_array($cookie))
 		{
-			$cookies_data = [];
+			$cookies_data = array();
 			foreach ($cookie as $key => $value)
 			{
 				$cookies_data[] = "{$key}={$value}";

@@ -76,7 +76,7 @@ class Conf {
 				array_pop($file);
 				$file_name = array_pop($file);
 				$file = (count($file) == 0) ? '' : implode(DOT,$file).DOT;
-				$env = get('app_env','');
+				$env = self::get('app_env','');
 				if($env != '' && file_exists($file)){
 					$file = APP_CONF_PATH.$env.DOT.$file.$file_name.'.inc.php';
 				}else{
@@ -106,8 +106,7 @@ function pi_call_method($class,$method,$args = array()){
                 throw new Exception('pi.call.err reflection args not match',1024);
         }
         //公共方法才允许被调用
-        $reflection->invokeArgs($class,$args);
-        return true;
+        return $reflection->invokeArgs($class,$args);
     }
 
     return false;

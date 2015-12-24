@@ -10,6 +10,7 @@ define("PI_PIPE",PI_ROOT.'pipe'.DOT);
 
 //内部调用或者网络错误的返回err_code标识
 define("INNER_ERR",'_pi_inner_err_code');
+define("INNER_RES_PACK",'_pi_inner_content');
 
 Pi::set('MUST_CONST',array('PI_ROOT','APP_ROOT','COM_ROOT'));
 Pi::set('COM_DIR',array('export','lib','logic','model','conf'));

@@ -30,6 +30,7 @@ class RouteDispatcher {
 	}
 	//自定义路由检查,最后反应到uri变量上,参数用request保存代替
 	public function customRouter($url = null,$domain = ''){
+		$this->setBasePath(APP_CTR_ROOT);
 		$uri = ($url == null) ? $this->uri : $url;
 		if(empty($uri)) return false;
 		//去掉空path
@@ -58,7 +59,6 @@ class RouteDispatcher {
 			array_shift($uri);
 			$this->class_pre = 'Ajax';
 		}else{
-			$this->setBasePath(APP_CTR_ROOT);
 			$this->class_pre = '';
 		}
 		if(Conf::get('route.second_domain_enable',true)){
@@ -131,7 +131,7 @@ class RouteDispatcher {
 		if($url != null){
 			$this->customRouter($url,$domain);
 		}
-		
+
 		$uri = empty($this->uri) ? array() : explode('/',$this->uri);
 		
 		//如果没有任何path info,走默认配置，没有配置改成index
@@ -157,7 +157,6 @@ class RouteDispatcher {
 		}
 		$cls = $this->class_pre.$cls."Ctr";
 		$file_path = $this->base_path.$mod_path.$cls.'.php';
-
 		if(is_readable($file_path)){
 			Pi::inc($file_path);
 		}else{
@@ -176,9 +175,10 @@ class RouteDispatcher {
 				pi_call_method($class,'setAjax',array(true));
 			}
 			pi_call_method($class,'_before');
-			if(substr($this->func,0,1) == '_' || !pi_call_method($class,$this->func)){
+			if(substr($this->func,0,1) == '_' || !is_callable(array($class,$this->func))){
 				throw new Exception('router.err not '.$cls.' can not call : '.$this->func,1025);
 			}
+			pi_call_method($class,$this->func);
 			pi_call_method($class,'_after');
 			pi_call_method($class,'_p_after');
 		}catch(Exception $ex){
