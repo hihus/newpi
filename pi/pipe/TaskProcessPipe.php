@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file TaskProcessPipe.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
 class TaskProcessPipe implements Ipipe {
 	public function execute(App $app){
@@ -23,11 +27,10 @@ class TaskProcessPipe implements Ipipe {
 		$file = $path.$cls_file.'.php';
 		
 		Pi::inc(PI_CORE.'BaseTask.php');
-		if(!is_readable($file)){
+		if(!Pi::inc($file)){
 			throw new Exception('task.err can not load the file :'.$file,1034);
 		}
-		
-		Pi::inc($file);
+
 		if(!class_exists($class)){
 			throw new Exception('task.err can not find the class :'.$class,1035);
 		}

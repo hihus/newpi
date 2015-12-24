@@ -1,10 +1,4 @@
 <?php
-/**
- * @file Log.php
- * @author wanghe (hihu@qq.com)
- * @date 2015/12/08
- * @version 1.0 
- **/
 
 if (!function_exists('posix_getpid')) {
 	function posix_getpid() {

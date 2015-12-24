@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file PageCtr.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
 class PageCtr {
 	protected $tpl = null;

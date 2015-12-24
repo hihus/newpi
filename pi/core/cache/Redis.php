@@ -1,7 +1,7 @@
 <?php
 Pi::inc(dirname(__FILE__).DOT.'PICacheAbstract.php');
-class PRedis extends PICacheAbstract
-{
+
+class PRedis extends PICacheAbstract {
     public $options = array(
         'persistent'            => true,
         'host'                  => '127.0.0.1',

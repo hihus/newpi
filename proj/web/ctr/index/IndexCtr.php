@@ -14,7 +14,7 @@ class IndexCtr extends PageCtr {
 		echo $res;
 		$login = picom('login');
 		$res = $login->dologin(array('111'=>1241,'hihu'=>1241));
-		var_dump($res);
+		echo ($res);
 	}
 
 	public function _before(){

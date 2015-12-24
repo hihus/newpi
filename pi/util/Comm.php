@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file Common.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
 Class Comm {
 	

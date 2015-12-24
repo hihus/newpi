@@ -2,7 +2,6 @@
 /**
  * @file App.php
  * @author wanghe (hihu@qq.com)
- * @version 1.0 
  **/
 
 include(dirname(__FILE__).'/Pi.php');
@@ -32,7 +31,7 @@ class App {
 		}
 		//必须先设置运行的类型和运行的环境
 		if(empty($this->mode) || !is_string($this->mode)){
-			die(' pi.err not set or  set a wrong mode ');
+			die('pi.err not set or set a wrong mode');
 		}
 
 		$this->appId = $this->_genAppid();
@@ -45,7 +44,6 @@ class App {
 		}else{
 			$this->_init();
 		}
-
 	}
 
 	//运行开始，执行流程
@@ -89,10 +87,10 @@ class App {
 		$mustConst = Pi::get('MUST_CONST',array('PI_ROOT','APP_ROOT','COM_ROOT'));
 		foreach($mustConst as $c){
 			if(!defined($c)){
-				die(' pi.err first you must define the const: '.$c);
+				die('pi.err first you must define the const: '.$c);
 			}
 			if(!is_dir(constant($c))){
-				die(' pi.err it is not a dir of the const: '.$c);
+				die('pi.err it is not a dir of the const: '.$c);
 			}
 		}
 		//对com_root的目录要求
@@ -100,7 +98,7 @@ class App {
 		$com_dirs = array_flip(scandir(COM_ROOT));
 		foreach($com_need_dirs as $d){
 			if(!isset($com_dirs[$d])){
-				die(' pi.err com root need init the dir: '.$d);
+				die('pi.err com root need init the dir: '.$d);
 			}
 		}
 		define("EXPORT_ROOT",COM_ROOT.'export'.DOT);
@@ -114,22 +112,27 @@ class App {
 
 	protected function _initDb(){
 		$db_lib = Pi::get('DbLib');
-		if(!is_readable($db_lib)){
-			die("pi.err can't read the core db lib \n");
+		if(!Pi::inc($db_lib)){
+			die('pi.err can not read the core db lib');
 		}
-		Pi::inc($db_lib);
 		//对数据库表操作的类需要集成下面文件的类
-		Pi::inc(PI_CORE.'BaseModel.php');
+		if(!Pi::inc(PI_CORE.'BaseModel.php')){
+			die('pi.err can not read the BaseModel lib');
+		}
 	}
 
 	protected function _initCache(){
 		$is_enable_memcache = Pi::get('global.enable_memcache',true);
 		$is_enable_redis = Pi::get('global.enable_redis',true);
 		if($is_enable_memcache){
-			 Pi::inc(Pi::get('MemcacheLib'));
+			if(!Pi::inc(Pi::get('MemcacheLib'))){
+				die('pi.err can not read the Memcache Lib');
+			}
 		}
 		if($is_enable_redis){
-			 Pi::inc(Pi::get('RedisLib'));
+			if(!Pi::inc(Pi::get('RedisLib'))){
+				die('pi.err can not read the Redis Lib');
+			}
 		}
 	}
 	
@@ -138,13 +141,17 @@ class App {
 	}
 	
 	protected function _initPipes(){
-		Pi::inc(Pi::get('PipeExe'));
+		if(!Pi::inc(Pi::get('PipeExe'))){
+			die('pi.err can not read the Pipe Lib');
+		}
 		$this->pipe = new PipeExecutor($this);
 		$this->pipe->loadPipes();
 	}
 	
 	protected function _initLoader(){
-		Pi::inc(Pi::get('LoaderLib'));
+		if(!Pi::inc(Pi::get('LoaderLib'))){
+			die('pi.err can not read the Loader Lib');
+		}
 	}
 
 	protected function _initProjEnv(){
@@ -158,13 +165,13 @@ class App {
 		//com配置目录
 		$path = COM_ROOT.'conf'.DOT;
 		if(!is_dir($path)){
-			die(' pi.err can not find the com conf path ');
+			die('pi.err can not find the com conf path');
 		}
 		define("COM_CONF_PATH",$path);
 		//项目配置目录
 		$path = APP_ROOT.$this->mode.DOT.'conf'.DOT;
 		if(!is_dir($path)){
-			die(' pi.err can not find the app conf path ');
+			die('pi.err can not find the app conf path');
 		}
 		define("APP_CONF_PATH",$path);
 	}
@@ -172,8 +179,12 @@ class App {
 	protected function _initLogger(){
 		//获得log path
 		if(!defined("LOG_PATH")) define("LOG_PATH",Pi::get('log.path',''));
-		if(!is_dir(LOG_PATH)) die('pi.err can not find the log path');
-        Pi::inc(Pi::get('LogLib'));
+		if(!is_dir(LOG_PATH)){
+			die('pi.err can not find the log path');
+		}
+		if(!Pi::inc(Pi::get('LogLib'))){
+			die('pi.err can not read the Log Lib');
+		}
 
 		$logFile = Pi::get('global.logFile','pi');
 		$logSeg = Pi::get('global.logSeg',Logger::NONE_ROLLING);
@@ -211,7 +222,7 @@ class App {
 		$errcode = $ex->getMessage();
 		$code = $ex->getCode();
 		if($this->needToLog($code)){
-			$errmsg = sprintf(' exception:%s, errcode:%s, trace: %s',$code,$errcode,$ex->__toString());
+			$errmsg = sprintf('<< exception:%s, errcode:%s, trace: %s >>',$code,$errcode,$ex->__toString());
 			if (($pos = strpos($errcode,' '))) {
 				$errcode = substr($errcode,0,$pos); 
 			}
@@ -219,6 +230,7 @@ class App {
 			Logger::fatal($errmsg);
 		}
 	}
+
 	//不需要记录日志的异常值代码，防止有些没有意义的记录冲刷日志,取核心代码和项目代码的两个配置
 	protected function needToLog($code){
 		$core_no_need_log_code = Conf::get('global.nolog_exception',array());
@@ -228,6 +240,7 @@ class App {
 		}
 		return true;
 	}
+
 	function shutdownHandler(){
 		if($this->debug && !empty($res)){
 			$res = $this->timer->getResult();
@@ -242,6 +255,7 @@ class App {
 		$this->_clearDbOrCache();
 		$this->_end();
 	}
+
 	//预留清理数据库
 	protected function _clearDbOrCache(){
 		return true;
@@ -254,6 +268,7 @@ class App {
 	protected function _end(){
 		$this->pipe->execute('OutputPipe');
 	}
+	
 	//预留
 	protected function _initBegin(){
 		return true;

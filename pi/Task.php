@@ -50,7 +50,7 @@ class TaskApp extends App {
 	public function run(){
 		//初始化pipe
 		$default_pipe = array('TaskProcessPipe'=>'default');
-		$pipes = Pi::get('global.pipes',array());
+		$pipes = Conf::get('global.pipes',array());
 		if(empty($pipes)){
 			$pipes = $default_pipe;
 		}

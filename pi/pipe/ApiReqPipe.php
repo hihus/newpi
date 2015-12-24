@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file ApiReqPipe.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
 class ApiReqPipe implements Ipipe {
 	public $app = null;

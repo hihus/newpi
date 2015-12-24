@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file WebReqPipe.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
 class WebReqPipe implements Ipipe {
 	public $app = null;

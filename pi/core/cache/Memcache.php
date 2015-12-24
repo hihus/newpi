@@ -1,6 +1,11 @@
 <?php
+/**
+ * @file Memcache.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 Pi::inc(dirname(__FILE__).DOT.'PICacheAbstract.php');
-class Mem extends PICacheAbstract{
+class Mem extends PICacheAbstract {
     private static $instance = array();
     
     public static function get($name){

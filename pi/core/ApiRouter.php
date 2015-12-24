@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file ApiRouter.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 class ApiRouter {
 	public $app = null;
 	public function __construct(App $app){

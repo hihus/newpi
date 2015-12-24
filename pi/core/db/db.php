@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file db.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 //实现框架自己的db功能
 Pi::inc(PI_CORE.'db/medoo.php');
 

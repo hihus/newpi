@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file Loader.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 Pi::inc(PI_CORE.'Export.php');
 Pi::inc(PI_CORE.'Proxy.php');
 

@@ -1,6 +1,9 @@
 <?php
+/**
+ * @file Proxy.php
+ * @author wanghe (hihu@qq.com)
+ **/
 
-//虚拟类
 class Proxy {
 	public $mod = '';
 	public $add = '';

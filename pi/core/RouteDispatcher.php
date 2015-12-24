@@ -1,5 +1,10 @@
 <?php
-//web路由器v1版
+/**
+ * @file RouteDispatcher.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
+//web路由器v2版
 class RouteDispatcher {
 	private $uri = null;
 	private $host = '';
@@ -131,7 +136,7 @@ class RouteDispatcher {
 		if($url != null){
 			$this->customRouter($url,$domain);
 		}
-		
+
 		$uri = empty($this->uri) ? array() : explode('/',$this->uri);
 		
 		//如果没有任何path info,走默认配置，没有配置改成index
@@ -157,7 +162,6 @@ class RouteDispatcher {
 		}
 		$cls = $this->class_pre.$cls."Ctr";
 		$file_path = $this->base_path.$mod_path.$cls.'.php';
-
 		if(is_readable($file_path)){
 			Pi::inc($file_path);
 		}else{
