@@ -15,5 +15,8 @@ Pi::set('global.logFile','api');
 Pi::set('com_env','dev');
 Pi::set('app_env','dev');
 
-$app = new ApiApp($argv);
+//自定义类可以重构提供的基础ApiApp功能
+class PApiApp extends ApiApp {}
+
+$app = new PApiApp($argv);
 $app->run();

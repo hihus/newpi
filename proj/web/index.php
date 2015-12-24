@@ -15,5 +15,8 @@ Pi::set('global.logFile','web');
 Pi::set('com_env','dev');
 Pi::set('app_env','dev');
 
-$app = new WebApp();
+//自定义类可以重构提供的基础WebApp功能
+class PWebApp extends WebApp {}
+
+$app = new PWebApp();
 $app->run();
