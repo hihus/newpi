@@ -1,5 +1,5 @@
 ###introduce:
-	php framework PI
+	php framework PI （目前未经作者允许不能用于其他项目）
 
 ###depend:
 	php >= 5.2.0
@@ -13,7 +13,7 @@
 ###usage:
 	1   pi目录：核心框架 - 其下的web.php api.php task.php com.php 为常用的4各场景提供了一个示例
 	2 proj目录：项目框架 - 其下的目录都是示例，可用作正式环境的参考
-	
+
 ###todo list:
 	1 队列 memcache+mongodb 引擎
 	2 梳理核心代码所有异常和错误梳理 - 该返回的返回，该报错的报错 （关注cache挂掉后，cache返回结果）
