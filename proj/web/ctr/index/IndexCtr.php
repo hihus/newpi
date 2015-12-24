@@ -3,6 +3,7 @@
 class IndexCtr extends PageCtr {
 
 	public function index(){
+		
 		//$this->jump('/login',true);
 		echo "<br>";
 		echo "in index";

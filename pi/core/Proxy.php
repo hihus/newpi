@@ -61,13 +61,11 @@ class ProxyServer {
 		}
 	}
 	static function output($info,$err_code = false){
-		ob_start();
 		if($err_code === false){
 			echo serialize(array(INNER_RES_PACK=>$info));
 		}else{
 			echo serialize(array(INNER_ERR=>$err_code,'msg'=>$info));
 		}
-		ob_end_flush();
 		exit;
 	}
 }

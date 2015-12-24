@@ -51,9 +51,7 @@ class ApiApp extends App {
 		}
 		//内部export调用不需要做异常输出处理
 		if(!defined('USE_INNER_API')){
-			ob_start();
 			echo json_encode(array('msg'=>$errcode,INNER_ERR=>$code),true);
-			ob_end_flush();
 		}
 	}
 
