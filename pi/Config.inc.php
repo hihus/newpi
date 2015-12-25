@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file Config.inc.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 //最低配置，几乎不修改
 define("DOT",DIRECTORY_SEPARATOR);
 define("TIMEZONE",'Asia/Shanghai');

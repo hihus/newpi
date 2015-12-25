@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file Task.php
+ * @author wanghe (hihu@qq.com)
+ **/
+
 if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
