@@ -197,6 +197,7 @@ class App {
 	}
 
 	function errorHandler(){
+		print_r(debug_backtrace());
 		restore_error_handler();
 		$error = func_get_args();
 		$res = false;
