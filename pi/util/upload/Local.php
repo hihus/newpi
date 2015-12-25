@@ -92,8 +92,8 @@ class Util_Upload_Local {
         if (is_dir($dir)) {
             return true;
         }
-
-        if (mkdir($dir, 0777, true)) {
+        $mod = '07'.'77';
+        if (mkdir($dir, $mod, true)) {
             return true;
         } else {
             $this->error = "目录 {$savepath} 创建失败！";

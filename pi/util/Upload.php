@@ -254,8 +254,8 @@ class Upload
      */
     private function setDriver($driver = null, $config = null)
     {
-        $driver         = $driver ?: ($this->driver ?: C('FILE_UPLOAD_TYPE'));
-        $config         = $config ?: ($this->driverConfig ?: C('UPLOAD_TYPE_CONFIG'));
+        $driver         = $driver ? '' : ($this->driver ? '' : FILE_UPLOAD_TYPE);
+        $config         = $config ? '' : ($this->driverConfig ? '' : UPLOAD_TYPE_CONFIG);
         $class          = 'Util_Upload_'.ucfirst(strtolower($driver));
         $this->uploader = new $class($config);
         if (!$this->uploader) {
@@ -438,5 +438,4 @@ class Upload
         }
         return $name;
     }
-
 }

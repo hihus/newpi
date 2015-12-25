@@ -26,7 +26,7 @@ class App {
 		error_reporting(E_ALL|E_STRICT|E_NOTICE);
 
 		//设置是否开启调试,线上环境不要开启
-		if(defined('__PI_EN_DEBUG') || isset($_GET['__PI_EN_DEBUG'])){
+		if(defined('__PI_EN_DEBUG')){
 			$this->debug = true;
 		}
 		//必须先设置运行的类型和运行的环境

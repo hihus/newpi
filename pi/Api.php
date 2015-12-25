@@ -23,12 +23,6 @@ class ApiApp extends App {
 		}
 
 		parent::__construct();
-
-		//debug
-		if($this->debug && !empty($argv)){
-			$_REQUEST['mod'] = $argv[1];
-			$_REQUEST['func'] = $argv[2];
-		}
 	}
 
 	protected function _begin(){
