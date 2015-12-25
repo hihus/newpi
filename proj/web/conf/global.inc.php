@@ -8,4 +8,4 @@ Conf::set('global.view_engine','Smarty');
 Conf::set('global.view_path',APP_ROOT.'view/views/');
 //Conf::set('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
 Conf::set('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
-Conf::set('global.nolog_exception',array(1022=>1));
+Conf::set('global.nolog_exception',array(1022=>1,1025=>1));

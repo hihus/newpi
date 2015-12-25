@@ -54,7 +54,25 @@ class TaskApp extends App {
 		if(empty($pipes)){
 			$pipes = $default_pipe;
 		}
+
 		$this->pipeLoadContainer = $pipes;
+		//后台脚本方便日志记录,把所有输出全部定位到日志目录
+		ob_start();
+		echo("\n---------------------".date("Y-m-d H:i:s")."--------------------\n");
+		echo("\nrun result:\n");
+		
+		$this->timer->begin('task_run');
+
 		parent::run();
+		
+		$this->timer->end('task_run');
+		$time = $this->timer->getResult();
+		
+		echo("\nrun time : ".($time[0]['1']/1000)." s \n");
+		echo("\n---------------------".date("Y-m-d H:i:s")."--------------------\n");
+		
+		$res = ob_get_clean();
+		Logger::trace("%s",var_export($res,true));
+
 	}
 }

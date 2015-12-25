@@ -14,7 +14,7 @@ Pi::set('com_env','dev');
 Pi::set('app_env','dev');
 
 //自定义类可以重构提供的基础TaskApp功能
-class TaskApp extends TaskApp {}
+class PTaskApp extends TaskApp {}
 
 $app = new PTaskApp($argv);
 $app->run();

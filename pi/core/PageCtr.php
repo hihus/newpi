@@ -94,7 +94,7 @@ class PageCtr {
 
 	protected function jump($url,$inner = false){
 		if($inner === false){
-			Comm::Jump($url);
+			Comm::jump($url);
 		}else{
 			$this->router->dispatch($url);
 		}

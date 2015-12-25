@@ -68,6 +68,7 @@ class ProxyServer {
 	}
 
 	static function output($info,$err_code = false){
+		ob_end_clean();
 		if($err_code === false){
 			echo serialize(array(INNER_RES_PACK=>$info));
 		}else{
@@ -98,13 +99,13 @@ class PI_RPC {
 					$data = isset($data[INNER_RES_PACK]) ? $data[INNER_RES_PACK] : $data;
 					return $data;
 				}else{
-					throw new Exception("curl err",5011);
+					throw new Exception('curl error',5011);
 				}
 			} catch (Exception $e) {
 				return array(INNER_ERR=>5011,'msg'=>$curl->getErrorMsg());
 			}
 		}
-		throw new Exception("inner api err conf : ".var_export($conf),5004);
+		throw new Exception('inner api err conf : '.var_export($conf),5004);
 	}
 //end of class
 }

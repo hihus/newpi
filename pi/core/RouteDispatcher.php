@@ -13,6 +13,7 @@ class RouteDispatcher {
 	private $mod = '';
 	private $func = '';
 	private $class_pre = '';
+	//禁止访问的方法，如果用_开头的方法也不允许访问，其他的只有public方法允许访问
 	private $prtected = array(  
 								'_before'=>1,'_after'=>1,'_p_before'=>1,
 								'_p_after'=>1,'initTmpl'=>1,'setRouter'=>1,
@@ -156,22 +157,25 @@ class RouteDispatcher {
 		if(isset($this->prtected[$this->func])){
 			throw new Exception('router.err can not reach the protected ctr',1021);
 		}
+
 		$mod_path = '';
 		$cls = '';
 		foreach($this->mod as $mod){
 			$mod_path = $mod_path.$mod.DOT;
 			$cls = $cls.ucfirst($mod);
 		}
+		
 		$cls = $this->class_pre.$cls."Ctr";
 		$file_path = $this->base_path.$mod_path.$cls.'.php';
-		if(is_readable($file_path)){
-			Pi::inc($file_path);
-		}else{
+		
+		if(!is_readable($file_path) || !Pi::inc($file_path)){
 			throw new Exception('router.err not found the router file : '.$file_path,1022);
 		}
+
 		if(!class_exists($cls)){
 			throw new Exception('router.err not found the router class: '.$cls,1023);
 		}
+
 		//执行
 		$class = new $cls();
 		try{

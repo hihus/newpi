@@ -49,7 +49,7 @@ class ApiApp extends App {
 			$this->status = $errcode;
 			Logger::fatal($errmsg);
 		}
-		//内部export调用不需要做异常输出处理
+		//内部export调用不需要做异常输出处理. 和ApiRouter.php的output错误输出格式一致
 		if(!defined('USE_INNER_API')){
 			echo json_encode(array('msg'=>$errcode,INNER_ERR=>$code),true);
 		}
@@ -67,6 +67,8 @@ class ApiApp extends App {
 	public function run(){
 		//内网api调用
 		if($this->_checkInnerApi()){
+			//如果有其他调试输出忽略
+			ob_start();
 			define("USE_INNER_API",1);
 			Pi::inc(PI_CORE.'Proxy.php');
 			ProxyServer::Server();

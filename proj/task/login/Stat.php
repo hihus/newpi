@@ -5,6 +5,7 @@ class LoginStat extends BaseTask {
 		//test com autoload
 		$login = new Logic_Login_Login();
 		$login->login();
+		echo "sadgasg";
 		//test model autoload
 		$log_table = new Model_login_UserLogin();
 		$log_table->doLogin();

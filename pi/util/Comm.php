@@ -40,7 +40,7 @@ Class Comm {
 		}
 	}
 
-	static function ContentFilter($v){
+	static function contentFilter($v){
 		if(is_numeric($v) || is_object($v)){
 			return $v;
 		}
@@ -52,10 +52,10 @@ Class Comm {
 	static function filter($v){
 		if(is_array($v)){
 			while(list($key,$val) = each($v)){
-				$v[$key] = self::ContentFilter($val);
+				$v[$key] = self::contentFilter($val);
 			}
 		}else{
-			$v = self::ContentFilter($v);
+			$v = self::contentFilter($v);
 		}
 		return $v;
 	}
@@ -187,11 +187,11 @@ Class Comm {
 	}
 
 	//预留，预处理HTTP的一些参数
-	static function ReqFilter($params = array()){
+	static function reqFilter($params = array()){
 		return false;
 	}
 
-	static function Jump($url){
+	static function jump($url){
 		header('Location:'.$url);
 		exit;
 	}
@@ -257,7 +257,7 @@ Class Comm {
      * @param string $nation 国别，目前仅支持中国大陆
      * @return boolean
      */
-    static function ValidMobile($mobile_number, $nation = 'China/Mainland') {
+    static function validMobile($mobile_number, $nation = 'China/Mainland') {
         // 电话号码判断，包括虚拟运营商号段
         /**
          * 移动号码段: 134、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188

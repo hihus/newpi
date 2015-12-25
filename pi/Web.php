@@ -39,23 +39,29 @@ class WebApp extends App {
 			die('can not init the template engine class');
 		}
 	}
+	
 	function errorHandler(){
 		parent::errorHandler();
 		self::page_5xx();
 	}
+	
 	function exceptionHandler($ex){
 		parent::exceptionHandler($ex);
 		self::page_4xx();
 	}
 	
+	//webserver 配置html访问不走框架
 	function page_4xx(){
-		include(APP_ROOT.APP_NAME.'/4xx.html');
-		exit;
+		$url = Conf::get('global.404',APP_ROOT.APP_NAME.'/4xx.html');
+		Comm::jump($url);
 	}
+
+	//webserver 配置html访问不走框架
 	function page_5xx(){
-		include(APP_ROOT.APP_NAME.'/5xx.html');
-		exit;
+		$url = Conf::get('global.404',APP_ROOT.APP_NAME.'/5xx.html');
+		Comm::jump($url);
 	}
+
 	public function run(){
 		//初始化pipe
 		$default_pipe = array('WebReqPipe'=>'default','WebRouterPipe'=>'default');
