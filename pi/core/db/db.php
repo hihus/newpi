@@ -15,7 +15,7 @@ class Db {
 		}
 		$conf = self::getConfig($name);
 		if($conf == null){
-			return null;
+			throw new Exception("check your db config fordabase :".$name, 6001);
 		}
 		if(!isset(self::$instance[$name])){
 			self::$instance[$name] = new PiDb($conf);
@@ -37,7 +37,7 @@ class Db {
 		// 	$conf['master'] = $c['slave'];
 		// }
 		if(!isset($c['master']) && !isset($c['slave'])){
-			$conf['master'] = $c;
+			return null;
 		}else{
 			$conf = $c;
 		}
