@@ -18,7 +18,7 @@ class PiDb {
 			throw new Exception("check your db config fordabase :".$name, 6001);
 		}
 		if(!isset(self::$instance[$name])){
-			self::$instance[$name] = new PiDb($conf);
+			self::$instance[$name] = new Inner_PiDb($conf);
 		}
 		return self::$instance[$name];
 	}
@@ -68,7 +68,7 @@ class PiDb {
 
 }
 
-class PiDb {
+class Inner_PiDb {
 	public $master_pdo = null;
 	public $slave_pdo = null;
 	public $current_pdo = null;
