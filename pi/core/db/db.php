@@ -209,9 +209,9 @@ class PiDb {
 		}
 	}
 	public function __destruct(){
-		if($this->master_pdo != null && $this->master_pdo->inTransaction()){
-			$this->master_pdo->rollBack();
-		}
+		// if($this->master_pdo != null && $this->master_pdo->inTransaction()){
+		// 	$this->master_pdo->rollBack();
+		// }
 	}
 //end of class
 }
