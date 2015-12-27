@@ -1,5 +1,5 @@
 <?php
-class LoginCtr extends PageCtr{
+class LoginCtr extends PI_PageCtr{
 	public function index(){
 		echo "<br>to login<br>";
 		var_dump($this->req('userid'));
