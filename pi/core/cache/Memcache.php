@@ -5,7 +5,7 @@
  **/
 
 Pi::inc(dirname(__FILE__).DOT.'PICacheAbstract.php');
-class Mem extends PICacheAbstract {
+class PIMem extends PICacheAbstract {
     private static $instance = array();
     
     public static function get($name){

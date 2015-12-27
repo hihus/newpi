@@ -7,7 +7,7 @@
 //实现框架自己的db功能
 Pi::inc(PI_CORE.'db/medoo.php');
 
-class Db {
+class PiDb {
 	private static $instance = null;
 	public static function init($name = 's'){
 		if(empty($name) && !is_string($name)){
@@ -132,7 +132,7 @@ class PiDb {
 				$this->current_pdo = $this->master_pdo;
 				return true;
 			}elseif(isset($this->conf['master'])){
-				$this->master_pdo = new Medoo($this->conf['master']);
+				$this->master_pdo = new Pi_Medoo($this->conf['master']);
 				$this->current_pdo = $this->master_pdo;
 				return true;
 			}
@@ -141,7 +141,7 @@ class PiDb {
 				$this->current_pdo = $this->slave_pdo;
 				return true;
 			}else if(isset($this->conf['slave'])){
-				$this->slave_pdo = new Medoo($this->conf['slave']);
+				$this->slave_pdo = new Pi_Medoo($this->conf['slave']);
 				$this->current_pdo = $this->slave_pdo;
 				return true;
 			}
