@@ -16,16 +16,16 @@ class IndexCtr extends PageCtr {
 		$res = $login->dologin(array('111'=>1241,'hihu'=>1241));
 		echo ($res);
 
-		$q = new Queue("hihu",'users',600);
-		$q->push(array("queue"=>'真的'));
-		$q->push(array("queue"=>'真的'));
-		$q->push(array("queue"=>'真的'));
-		var_dump($q->getSize());
-		var_dump($q->pop());
-		var_dump($q->pop());
-		var_dump($q->getSize());
-		var_dump($q->clear());
-		var_dump($q->pop());
+		// $q = new Queue("hihu",'users',600);
+		// $q->push(array("queue"=>'真的'));
+		// $q->push(array("queue"=>'真的'));
+		// $q->push(array("queue"=>'真的'));
+		// var_dump($q->getSize());
+		// var_dump($q->pop());
+		// var_dump($q->pop());
+		// var_dump($q->getSize());
+		// var_dump($q->clear());
+		// var_dump($q->pop());
 	}
 
 	public function _before(){
