@@ -56,14 +56,18 @@ class WebApp extends App {
 	
 	//webserver 配置html访问不走框架
 	function page_4xx(){
-		$url = Conf::get('global.404',APP_ROOT.APP_NAME.'/4xx.html');
-		Comm::jump($url);
+		echo "400";
+		exit;
+		// $url = Conf::get('global.404',APP_ROOT.APP_NAME.'/4xx.html');
+		// Comm::jump($url);
 	}
 
 	//webserver 配置html访问不走框架
 	function page_5xx(){
-		$url = Conf::get('global.404',APP_ROOT.APP_NAME.'/5xx.html');
-		Comm::jump($url);
+		echo "500";
+		exit;
+		// $url = Conf::get('global.404',APP_ROOT.APP_NAME.'/5xx.html');
+		// Comm::jump($url);
 	}
 
 	public function run(){
