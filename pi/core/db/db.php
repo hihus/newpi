@@ -32,9 +32,11 @@ class Db {
 		$c = Pi::get('db.'.$name,null);
 		$conf = array();
 		if(empty($c) || !is_array($c)) return null;
-		if(!isset($c['master']) && isset($c['slave'])){
-			$conf['master'] = $c['slave'];
-		}else if(!isset($c['master']) && !isset($c['slave'])){
+		//允许只有从库的情况
+		// if(!isset($c['master']) && isset($c['slave'])){
+		// 	$conf['master'] = $c['slave'];
+		// }
+		if(!isset($c['master']) && !isset($c['slave'])){
 			$conf['master'] = $c;
 		}else{
 			$conf = $c;
@@ -73,16 +75,24 @@ class PiDb {
 	public $conf = null;
 	public $error_handle = false;
 	private $use_master = false;
-	private $has_proxy = false;
+	private $read_only = true;
 	private $master_methods = array('lastInsertId'=>1,'rollBack'=>1,'beginTransaction'=>1,'commit'=>1,'insert'=>1,'update'=>1,'delete'=>1,'replace'=>1);
 	private $slave_methods = array('select'=>1,'get'=>1,'has'=>1,'count'=>1,'max'=>1,'min'=>1,'avg'=>1,'sum'=>1);
 	public function __construct($conf){
 		$this->conf = $conf;
-		if(isset($this->conf['slave'])){
-			$this->has_proxy = true;
+		//如果有主库配置，关闭read_only
+		if(isset($this->conf['master'])){
+			$this->read_only = false;
+		}
+		//如果只有主库配置，强制开启使用主库
+		if(isset($this->conf['master']) && !isset($this->conf['slave'])){
+			$this->use_master = true;
 		}
 	}
 	public function enableMaster(){
+		if($this->read_only){
+			return false;
+		}
 		$this->use_master = true;
 	}
 	public function disableMaster(){
@@ -115,18 +125,30 @@ class PiDb {
 	}
 	private function initDb($type = 'slave'){
 		if($type == ''){
-			return null;
+			return false;
 		}
 		if($type == 'master'){
-			if($this->master_pdo == null){
+			if($this->master_pdo != null){
+				$this->current_pdo = $this->master_pdo;
+				return true;
+			}elseif(isset($this->conf['master'])){
 				$this->master_pdo = new Medoo($this->conf['master']);
 				$this->current_pdo = $this->master_pdo;
+				return true;
 			}
-		}else{
-			if($this->slave_pdo == null){
+		}else if($type == 'slave'){
+			if($this->slave_pdo != null){
+				$this->current_pdo = $this->slave_pdo;
+				return true;
+			}else if(isset($this->conf['slave'])){
 				$this->slave_pdo = new Medoo($this->conf['slave']);
 				$this->current_pdo = $this->slave_pdo;
+				return true;
 			}
+		}
+
+		if($this->current_pdo == null){
+			throw new Exception('can not init db with conf:'.var_export($this->conf,true),6033);
 		}
 	}
 	//exec() 暂时不开放给外面
@@ -142,7 +164,11 @@ class PiDb {
 			if(!isset($args[0]) || !is_string($args[0])){
 				throw new Exception("db.Error params for method query!",6055);
 			}
+
 			$pre = preg_match("/^(\s*)select/i", $args[0]);
+			if($pre == 0 && $this->read_only){
+				throw new Exception("db.Error can not use read only stat for sql :".var_export($args[0],true),6022);
+			}
 			if($pre == 0 || $this->isEnableMaster()){
 				$this->initDb('master');
 			}else{
@@ -154,25 +180,22 @@ class PiDb {
 			return $res;
 		}
 		//其他函数处理
-		if(!$this->has_proxy){
+		if($this->isEnableMaster()){
 			$this->initDb('master');
 		}else{
-			if($this->isEnableMaster()){
+			//默认走salve - select get has count max min avg sum
+			if(isset($this->slave_methods[$method])){
+				$this->initDb('slave');
+			}
+			//默认走master - insert update delete replace 
+			if(isset($this->master_methods[$method])){
+				if($this->read_only){
+					throw new Exception("db.Error can not use read only for method:".$method,6011);
+				}
 				$this->initDb('master');
-			}else{
-				//默认走salve - select get has count max min avg sum
-				if(isset($this->slave_methods[$method])){
-					$this->initDb('slave');
-				}
-				//默认走master - insert update delete replace 
-				if(isset($this->master_methods[$method])){
-					$this->initDb('master');
-				}
 			}
 		}
-		if($this->current_pdo == null){
-			$this->initDb('master');
-		}
+		
 		$res = call_user_func_array(array($this->current_pdo, $method), $args);
 		$this->err();
 		return $res;
