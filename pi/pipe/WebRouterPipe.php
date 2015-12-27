@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class WebRouterPipe implements Ipipe {
+class WebRouterPipe implements PI_Ipipe {
 	public function __construct(){
 		$dispatcher = Conf::get('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
 		if(!is_readable($dispatcher) || !Pi::inc($dispatcher)){

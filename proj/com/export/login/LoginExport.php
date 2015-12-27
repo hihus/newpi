@@ -1,6 +1,6 @@
 <?php
 
-class LoginExport extends Export{
+class LoginExport extends PI_Export{
 
 	function dologin($str = array()){
 		$cls = new Logic_Login_Login();

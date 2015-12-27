@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-abstract class BaseTask {
+abstract class PI_BaseTask {
 	abstract public function execute($argv);
 }
 

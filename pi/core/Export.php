@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class Export {
+class PI_Export {
 	public $export_name = '';
 	public function __construct(){
 

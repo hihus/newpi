@@ -6,7 +6,7 @@
  * @version 1.0 
  **/
 
-class WebTestPipe implements Ipipe {
+class WebTestPipe implements PI_Ipipe {
 	public function execute(App $app){
 		echo " \n web test pipe run ~ \n";
 	}

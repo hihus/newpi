@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class PIBaseModel {
+class PI_BaseModel {
 	public function __construct(){
 
 	}

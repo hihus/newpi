@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class TaskProcessPipe implements Ipipe {
+class TaskProcessPipe implements PI_Ipipe {
 	public function execute(App $app){
 		$argv = $app->argv;
 		$script = $app->task_name;

@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class Proxy {
+class PI_Proxy {
 	public $mod = '';
 	public $add = '';
 	public $conf = '';
@@ -43,7 +43,7 @@ class Proxy {
 }
 
 //proxy server
-class ProxyServer {
+class PI_ProxyServer {
 	static function Server(){
 		$mod = Comm::req('mod');
 		$add = Comm::req('add');

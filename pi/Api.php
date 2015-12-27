@@ -69,7 +69,7 @@ class ApiApp extends App {
 			ob_start();
 			define("USE_INNER_API",1);
 			Pi::inc(PI_CORE.'Proxy.php');
-			ProxyServer::Server();
+			PI_ProxyServer::Server();
 		}else{
 			//初始化pipe
 			$default_pipe = array('ApiReqPipe'=>'default','ApiHttpRouterPipe'=>'default');

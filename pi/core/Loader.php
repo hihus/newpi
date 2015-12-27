@@ -22,7 +22,7 @@ function picom($mod,$add = '',$is_server = false){
 	$proxy_conf = Pi::get($conf_name,array());
 	if($is_server === false && !empty($proxy_conf)){
 		//proxy代理类,根据更详细的配置选择哪个接口走远程
-		$class = new Proxy($mod,$add,$proxy_conf);
+		$class = new PI_Proxy($mod,$add,$proxy_conf);
 		$loaded_mod[$mod.$add] = $class;
 	}else{
 		//直接加载本地逻辑接口
@@ -49,7 +49,7 @@ function pi_load_export_file($mod,$add){
 
 	if(class_exists($cls)){
 		$class = new $cls();
-		if(!is_subclass_of($class,'Export')){
+		if(!is_subclass_of($class,'PI_Export')){
 			throw new Exception('the class '.$cls.' is not the subclass of Export',1002);
 		}
 		$class->export_name = $cls;

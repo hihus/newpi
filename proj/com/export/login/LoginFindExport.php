@@ -1,5 +1,5 @@
 <?php
-class LoginFindExport extends Export{
+class LoginFindExport extends PI_Export{
 	function find(){
 		// echo "\n find the export \n";
 		// $s = new Model_Login_UserLogin();

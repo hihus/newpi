@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class ApiReqPipe implements Ipipe {
+class ApiReqPipe implements PI_Ipipe {
 	public $app = null;
 	
 	public function execute(App $app){

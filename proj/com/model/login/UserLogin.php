@@ -1,6 +1,6 @@
 <?php
 
-class Model_Login_UserLogin extends PIBaseModel {
+class Model_Login_UserLogin extends PI_BaseModel {
 	function doLogin(){
 		// $db = PiDb::init('hihus');
 		// $sql = 'select * from users where 1=1';

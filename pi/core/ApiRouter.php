@@ -56,7 +56,7 @@ class ApiRouter {
 		
 		$cls = new $class();
 		
-		if(!is_subclass_of($cls,'BaseApi')){
+		if(!is_subclass_of($cls,'PI_BaseApi')){
 			$this->output('api.err is not the subclass of BaseApi',1010);
 		}
 		if (!is_callable(array($cls,$func))){

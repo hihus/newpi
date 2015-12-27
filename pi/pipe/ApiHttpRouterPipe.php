@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class ApiHttpRouterPipe implements Ipipe {
+class ApiHttpRouterPipe implements PI_Ipipe {
 	public $app = null;
 	
 	public function execute(App $app){
