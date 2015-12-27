@@ -6,6 +6,6 @@
 
 class OutputPipe implements Ipipe {
 	public function execute(App $app){
-		
+
 	}
 }
