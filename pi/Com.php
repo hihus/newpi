@@ -37,7 +37,7 @@ class ComApp extends App {
 	}
 
 	protected function _initPhpEnv(){
-		error_reporting(E_ALL|E_STRICT|E_NOTICE);
+		//error_reporting(E_ALL|E_STRICT|E_NOTICE);
 	}
 
 	protected function _initComConfig(){
