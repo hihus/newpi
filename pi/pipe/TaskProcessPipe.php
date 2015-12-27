@@ -36,7 +36,7 @@ class TaskProcessPipe implements PI_Ipipe {
 		}
 
 		$cls = new $class();
-		if(!is_subclass_of($cls,'BaseTask')){
+		if(!is_subclass_of($cls,'PI_BaseTask')){
 			throw new Exception('task.err the class '.$class.' is not the subclass of BaseTask ',1036);
 		}
 		$cls->execute($argv);

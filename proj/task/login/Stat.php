@@ -1,6 +1,6 @@
 <?php
 
-class LoginStat extends BaseTask {
+class LoginStat extends PI_BaseTask {
 	public function execute($argv){
 		//test com autoload
 		$login = new Logic_Login_Login();
