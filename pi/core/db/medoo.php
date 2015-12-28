@@ -169,7 +169,7 @@ class Pi_Medoo
 		return $this->pdo->query($query);
 	}
 
-	protected function exec($query)
+	public function exec($query)
 	{
 		if ($this->debug_mode)
 		{

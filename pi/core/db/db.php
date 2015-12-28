@@ -160,7 +160,7 @@ class Inner_PiDb {
 			return false;
 		}
 		//query() 处理
-		if($method == 'query'){
+		if($method == 'query' || $method == 'exec'){
 			if(!isset($args[0]) || !is_string($args[0])){
 				throw new Exception("db.Error params for method query!",6055);
 			}
@@ -175,7 +175,7 @@ class Inner_PiDb {
 				$this->initDb('slave');
 			}
 			
-			$res = $this->current_pdo->query($args[0]);
+			$res = $this->current_pdo->$method($args[0]);
 			$this->err();
 			return $res;
 		}
