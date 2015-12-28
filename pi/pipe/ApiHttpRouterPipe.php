@@ -4,13 +4,13 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class ApiHttpRouterPipe implements PI_Ipipe {
+class ApiHttpRouterPipe implements PiIpipe {
 	public $app = null;
 	
-	public function execute(App $app){
+	public function execute(PiApp $app){
 		$this->app = $app;
  		$router = Conf::get('global.router_file','ApiRouter.php');
-		$router_class = Conf::get('global.router_class','ApiRouter');
+		$router_class = Conf::get('global.router_class','PiApiRouter');
 		if(is_readable(PI_CORE.$router)){
 			Pi::inc(PI_CORE.$router);
 		}else{

@@ -1,13 +1,13 @@
 <?php
 /**
- * @file ApiRouter.php
+ * @file PiApiRouter.php
  * @author wanghe (hihu@qq.com)
  **/
 
-class ApiRouter {
+class PiApiRouter {
 	public $app = null;
 
-	public function __construct(App $app){
+	public function __construct(PiApp $app){
 		$this->app = $app;
 	}
 
@@ -56,7 +56,7 @@ class ApiRouter {
 		
 		$cls = new $class();
 		
-		if(!is_subclass_of($cls,'PI_BaseApi')){
+		if(!is_subclass_of($cls,'PiBaseApi')){
 			$this->output('api.err is not the subclass of BaseApi',1010);
 		}
 		if (!is_callable(array($cls,$func))){

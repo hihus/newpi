@@ -7,7 +7,7 @@
  * Copyright 2015, Angel Lai
  * Released under the MIT license
  */
-class Pi_Medoo 
+class PiMedoo 
 {
 	// General
 	protected $database_type;

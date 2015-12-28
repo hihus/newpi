@@ -4,8 +4,8 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class TaskProcessPipe implements PI_Ipipe {
-	public function execute(App $app){
+class TaskProcessPipe implements PiIpipe {
+	public function execute(PiApp $app){
 		$argv = $app->argv;
 		$script = $app->task_name;
 		$script = explode('_',$script);
@@ -36,7 +36,7 @@ class TaskProcessPipe implements PI_Ipipe {
 		}
 
 		$cls = new $class();
-		if(!is_subclass_of($cls,'PI_BaseTask')){
+		if(!is_subclass_of($cls,'PiBaseTask')){
 			throw new Exception('task.err the class '.$class.' is not the subclass of BaseTask ',1036);
 		}
 		$cls->execute($argv);

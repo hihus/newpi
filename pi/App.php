@@ -6,7 +6,7 @@
 
 include(dirname(__FILE__).'/Pi.php');
 
-class App {
+class PiApp {
 	public $debug = false;  //true false
 	public $appId = 0;
 	public $mode = null;    //exp: web task api com

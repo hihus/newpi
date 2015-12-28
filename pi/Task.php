@@ -7,7 +7,7 @@
 if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
-class TaskApp extends App {
+class TaskApp extends PiApp {
 	public $task_name = '';
 	public $argv = array();
 

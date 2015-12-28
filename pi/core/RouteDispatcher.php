@@ -5,7 +5,7 @@
  **/
 
 //web路由器v2版
-class RouteDispatcher {
+class PiRouteDispatcher {
 	private $uri = null;
 	private $host = '';
 	private $host_pre = 'www';

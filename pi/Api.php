@@ -7,7 +7,7 @@
 if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
-class ApiApp extends App {
+class ApiApp extends PiApp {
 	protected $data_types = array('json'=>1,'serialize'=>1);
 	public $data_type = 'json';
 	public function __construct($argv = array()){
@@ -69,7 +69,7 @@ class ApiApp extends App {
 			ob_start();
 			define("USE_INNER_API",1);
 			Pi::inc(PI_CORE.'Proxy.php');
-			PI_ProxyServer::Server();
+			PiProxyServer::Server();
 		}else{
 			//初始化pipe
 			$default_pipe = array('ApiReqPipe'=>'default','ApiHttpRouterPipe'=>'default');

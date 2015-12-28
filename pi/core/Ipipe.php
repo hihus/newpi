@@ -4,6 +4,6 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-interface PI_Ipipe {
-	public function execute(App $app);
+interface PiIpipe {
+	public function execute(PiApp $app);
 }

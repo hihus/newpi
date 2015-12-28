@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-abstract class PI_BaseApi {
+abstract class PiBaseApi {
 	
 }
 

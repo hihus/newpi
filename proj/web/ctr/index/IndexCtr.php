@@ -1,6 +1,6 @@
 <?php
 
-class IndexCtr extends PI_PageCtr {
+class IndexCtr extends PiPageCtr {
 
 	public function index(){
 		

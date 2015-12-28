@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class PI_PageCtr {
+class PiPageCtr {
 	protected $tpl = null;
 	protected $router = null;//路由的类变量
 	protected $request = null;

@@ -1,6 +1,6 @@
 <?php
 
-abstract class PICacheAbstract {
+abstract class PiCacheAbstract {
     public $conn;
 
     /**

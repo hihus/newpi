@@ -4,8 +4,8 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class InputPipe implements PI_Ipipe {
-	public function execute(App $app){
+class InputPipe implements PiIpipe {
+	public function execute(PiApp $app){
 
 	}
 }

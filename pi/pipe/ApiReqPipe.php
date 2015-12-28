@@ -4,10 +4,10 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class ApiReqPipe implements PI_Ipipe {
+class ApiReqPipe implements PiIpipe {
 	public $app = null;
 	
-	public function execute(App $app){
+	public function execute(PiApp $app){
 		$this->app = $app;
 		$this->filterInput();
 	}

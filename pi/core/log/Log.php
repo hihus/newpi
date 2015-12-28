@@ -8,7 +8,7 @@ if (!function_exists('posix_getpid')) {
 
 Pi::inc(dirname(__FILE__).'/Logger.php');
 
-final class Log {
+final class PiLog {
 	//日志缓冲
 	const PAGE_SIZE   = 4096;
 

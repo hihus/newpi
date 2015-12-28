@@ -1,6 +1,6 @@
 <?php
 
-class Login extends PI_BaseApi {
+class Login extends PiBaseApi {
 	public function dologin(){
 		echo " \ndo login \n";
 	}

@@ -4,8 +4,8 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-Pi::inc(dirname(__FILE__).DOT.'PICacheAbstract.php');
-class PIMem extends PICacheAbstract {
+Pi::inc(dirname(__FILE__).DOT.'PiCacheAbstract.php');
+class PiMc {
     private static $instance = array();
     
     public static function get($name){
@@ -40,7 +40,7 @@ class PIMem extends PICacheAbstract {
 //end of class
 }
 
-class MemInner extends PICacheAbstract{
+class MemInner extends PiCacheAbstract{
     public $cache_type = 'memcache'; // memcache 和 memcached
     public function __construct($conf,$type = 'memcache'){
         if(!is_array($conf) || empty($conf)){

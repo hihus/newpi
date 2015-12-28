@@ -7,7 +7,7 @@
 if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
-class WebApp extends App {
+class WebApp extends PiApp {
 	public function __construct(){
 		if(!defined("APP_CTR_ROOT")){
 			die('please define APP_CTR_ROOT const');

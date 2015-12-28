@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class PI_Proxy {
+class PiProxy {
 	public $mod = '';
 	public $add = '';
 	public $conf = '';
@@ -21,7 +21,7 @@ class PI_Proxy {
 		//在远程调用配置里面的接口走远程调用
 		if(isset($this->conf['#all']) || isset($this->conf[$method])){
 			$conf = isset($this->conf['#all']) ? $this->conf['#all'] : $this->conf[$method];
-			$rpc = new PI_RPC();
+			$rpc = new PiRPC();
 			return $rpc->call($method,$args,$this->mod,$this->add,$conf);
 		}else{
 			pi_load_export_file($this->mod,$this->add);
@@ -43,7 +43,7 @@ class PI_Proxy {
 }
 
 //proxy server
-class PI_ProxyServer {
+class PiProxyServer {
 	static function Server(){
 		$mod = Comm::req('mod');
 		$add = Comm::req('add');
@@ -79,7 +79,7 @@ class PI_ProxyServer {
 }
 
 //RPC网络操作
-class PI_RPC {
+class PiRPC {
 	public function call($method,$params,$mod,$add,$conf){
 		$sign = Pi::get('global.innerapi_sign','');
 		$sign_name = Pi::get('global.innerapi_sign_name','_pi_inner_nm');

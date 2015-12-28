@@ -1,5 +1,5 @@
 <?php
-class LoginNew extends PI_BaseApi {
+class LoginNew extends PiBaseApi {
 	public function dologin(){
 		return "hello-api-login";
 	}

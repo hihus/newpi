@@ -50,7 +50,7 @@ final class Logger {
 			unset ( $__log [$pid] );
 		}
 		
-		$__log [posix_getpid ()] = new Log ( );
+		$__log [posix_getpid ()] = new PiLog ( );
 		$log = $__log [posix_getpid ()];
 		if ($log->init ( $dir, $file, $level, $info, $roll, $flush )) {
 			return true;

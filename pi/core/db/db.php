@@ -18,7 +18,7 @@ class PiDb {
 			throw new Exception("check your db config fordabase :".$name, 6001);
 		}
 		if(!isset(self::$instance[$name])){
-			self::$instance[$name] = new Inner_PiDb($conf);
+			self::$instance[$name] = new InnerPiDb($conf);
 		}
 		return self::$instance[$name];
 	}
@@ -68,7 +68,7 @@ class PiDb {
 
 }
 
-class Inner_PiDb {
+class InnerPiDb {
 	public $master_pdo = null;
 	public $slave_pdo = null;
 	public $current_pdo = null;
@@ -132,7 +132,7 @@ class Inner_PiDb {
 				$this->current_pdo = $this->master_pdo;
 				return true;
 			}elseif(isset($this->conf['master'])){
-				$this->master_pdo = new Pi_Medoo($this->conf['master']);
+				$this->master_pdo = new PiMedoo($this->conf['master']);
 				$this->current_pdo = $this->master_pdo;
 				return true;
 			}
@@ -141,7 +141,7 @@ class Inner_PiDb {
 				$this->current_pdo = $this->slave_pdo;
 				return true;
 			}else if(isset($this->conf['slave'])){
-				$this->slave_pdo = new Pi_Medoo($this->conf['slave']);
+				$this->slave_pdo = new PiMedoo($this->conf['slave']);
 				$this->current_pdo = $this->slave_pdo;
 				return true;
 			}

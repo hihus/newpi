@@ -10,7 +10,7 @@ class PipeExecutor {
 	private $arr_pipe = array();
 	private $app = null;
 
-	function __construct(App $app){
+	function __construct(PiApp $app){
 		$this->app = $app;
 	}
 

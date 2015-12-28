@@ -7,7 +7,7 @@
 if(!defined('PI_ROOT')) define("PI_ROOT",dirname(__FILE__).'/');
 include(PI_ROOT.'App.php');
 
-class ComApp extends App {
+class ComApp extends PiApp {
 
 	public function __construct($argv){
 		$this->mode = 'com';

@@ -4,7 +4,7 @@
  * @author wanghe (hihu@qq.com)
  **/
 
-class WebRouterPipe implements PI_Ipipe {
+class WebRouterPipe implements PiIpipe {
 	public function __construct(){
 		$dispatcher = Conf::get('global.dispatcher_path',PI_CORE.'RouteDispatcher.php');
 		if(!is_readable($dispatcher) || !Pi::inc($dispatcher)){
@@ -12,9 +12,9 @@ class WebRouterPipe implements PI_Ipipe {
 		}
 	}
 
-	public function execute(App $app){
+	public function execute(PiApp $app){
 		//开始路由,query参数需要有url和param两个变量。方便路由选择
-		$dispatcher = new RouteDispatcher();
+		$dispatcher = new PiRouteDispatcher();
 		$dispatcher->run();
 	}
 //end of class
