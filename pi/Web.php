@@ -45,18 +45,33 @@ class WebApp extends PiApp {
 	}
 	
 	function errorHandler(){
+		
+		if($this->debug == true){
+			print_r(func_get_args());
+			print_r(debug_backtrace());
+			exit;
+		}
+
 		parent::errorHandler();
 		self::page_5xx();
 	}
 	
 	function exceptionHandler($ex){
+
+		if($this->debug == true){
+			echo '<br><br>';
+			echo $ex->getMessage();
+			echo '<br><br>';
+			exit;
+		}
+
 		parent::exceptionHandler($ex);
 		self::page_4xx();
 	}
 	
 	//webserver 配置html访问不走框架
 	function page_4xx(){
-		echo "400";
+		echo '<br><br>400<br><br>';
 		exit;
 		// $url = Conf::get('global.404',APP_ROOT.APP_NAME.'/4xx.html');
 		// Comm::jump($url);
@@ -64,7 +79,7 @@ class WebApp extends PiApp {
 
 	//webserver 配置html访问不走框架
 	function page_5xx(){
-		echo "500";
+		echo '<br><br>500<br><br>';
 		exit;
 		// $url = Conf::get('global.404',APP_ROOT.APP_NAME.'/5xx.html');
 		// Comm::jump($url);
