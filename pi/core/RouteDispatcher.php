@@ -178,6 +178,11 @@ class PiRouteDispatcher {
 
 		//执行
 		$class = new $cls();
+
+		if(!is_subclass_of($class,'PiPageCtr')){
+			throw new Exception('router.err class : '.$cls.'is not the subclass of PiPageCtr',1023);
+		}
+
 		try{
 			pi_call_method($class,'_p_before');
 			pi_call_method($class,'initTmpl');
