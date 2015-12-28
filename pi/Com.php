@@ -27,15 +27,6 @@ class ComApp extends App {
 		$this->_initCache();
 	}
 
-	protected function _initComConfig(){
-		//com配置目录
-		$path = COM_ROOT.'conf'.DOT;
-		if(!is_dir($path)){
-			die('pi.err can not find the com conf path');
-		}
-		define("COM_CONF_PATH",$path);
-	}
-
 	protected function _checkEnv(){
 		$need_init_const = array('PI_ROOT','COM_ROOT');
 		foreach($need_init_const as $c){
