@@ -1,5 +1,5 @@
 ###introduce:
-	php framework PI （目前本项目未经作者允许不能应用于其他项目，也不能基于本框架二次开发）
+	php framework PI v2.0（目前本项目未经作者允许不能应用于其他项目，也不能基于本框架二次开发）
 
 ###depends:
 	php >= 5.2.0
